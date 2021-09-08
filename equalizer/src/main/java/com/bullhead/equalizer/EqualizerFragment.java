@@ -3,6 +3,7 @@ package com.bullhead.equalizer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -57,7 +58,8 @@ public class EqualizerFragment extends Fragment {
     LineChartView chart;
     public PresetReverb presetReverb;
     public LoudnessEnhancer loudnessEnhancer;
-    public LinearLayout reverbLL;
+    public LinearLayout reverbLL,volumeLL;
+    SeekBar seekVolume;
     RelativeLayout rl;
     int y = 0,z=0;
 
@@ -120,10 +122,14 @@ public class EqualizerFragment extends Fragment {
         BassBoost.Settings bassBoostSetting     = new BassBoost.Settings(bassBoostSettingTemp.toString());
         bassBoostSetting.strength = Settings.equalizerModel.getBassStrength();
         bassBoost.setProperties(bassBoostSetting);
-
-        presetReverb = new PresetReverb(0, audioSesionId);
-        presetReverb.setPreset(Settings.equalizerModel.getReverbPreset());
-        presetReverb.setEnabled(Settings.isEqualizerEnabled);
+        try {
+            presetReverb = new PresetReverb(0, audioSesionId);
+            presetReverb.setPreset(Settings.equalizerModel.getReverbPreset());
+            presetReverb.setEnabled(Settings.isEqualizerEnabled);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         loudnessEnhancer=new LoudnessEnhancer(audioSesionId);
         loudnessEnhancer.setTargetGain(Settings.equalizerModel.getLoudnessStrength());
         loudnessEnhancer.setEnabled(Settings.isEqualizerEnabled);
@@ -149,12 +155,14 @@ public class EqualizerFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_equalizer, container, false);
     }
-
+    SharedPreferences sharedPreferences;
     @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sharedPreferences= ctx.getSharedPreferences("myPref",Context.MODE_PRIVATE);
         reverbLL=view.findViewById(R.id.reverbLL);
+        volumeLL=view.findViewById(R.id.volumeLL);
         fragTitle = view.findViewById(R.id.equalizer_fragment_title);
         equalizerSwitch = view.findViewById(R.id.equalizer_switch);
         equalizerSwitch.setChecked(Settings.isEqualizerEnabled);
@@ -168,11 +176,17 @@ public class EqualizerFragment extends Fragment {
                 Settings.equalizerModel.setEqualizerEnabled(isChecked);
             }
         });
-        if(Settings.equalizerModel.isReverbChecked())
+        if(sharedPreferences.getBoolean("reverb",false))
         {
             reverbLL.setVisibility(View.VISIBLE);
         }else{
             reverbLL.setVisibility(View.GONE);
+        }
+        if(sharedPreferences.getBoolean("volume",false))
+        {
+            volumeLL.setVisibility(View.VISIBLE);
+        }else{
+            volumeLL.setVisibility(View.GONE);
         }
         rl=view.findViewById(R.id.rl);
         int nightModeFlags =

@@ -12,4 +12,5 @@ public class Settings {
     public static double         ratio               = 1.0;
     public static boolean        isEditing           = false;
     public static boolean   reverbChecked=false;
+    public static boolean   volumeChecked=false;
 }

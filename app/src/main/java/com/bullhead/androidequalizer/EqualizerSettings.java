@@ -6,4 +6,6 @@ public class EqualizerSettings {
     public short reverbPreset;
     public short bassStrength;
     public short loudnessStrength;
+    public boolean isVolumeChecked;
+    public boolean isReverbChecked;
 }

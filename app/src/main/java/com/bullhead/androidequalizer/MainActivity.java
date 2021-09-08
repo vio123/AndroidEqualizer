@@ -125,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
             settings.reverbPreset = Settings.equalizerModel.getReverbPreset();
             settings.seekbarpos = Settings.equalizerModel.getSeekbarpos();
             settings.loudnessStrength=Settings.equalizerModel.getLoudnessStrength();
+            settings.isReverbChecked=sharedPreferences.getBoolean("reverb",false);
+            settings.isVolumeChecked=sharedPreferences.getBoolean("volume",false);
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
             Gson gson = new Gson();
@@ -147,6 +149,18 @@ public class MainActivity extends AppCompatActivity {
          model.setLoudnessStrength(settings.loudnessStrength);
         Settings.isEqualizerEnabled = true;
         Settings.isEqualizerReloaded = true;
+        if(!settings.isReverbChecked)
+        {
+            Settings.reverbChecked=sharedPreferences.getBoolean("reverb",false);
+        }else{
+            Settings.reverbChecked=settings.isReverbChecked;
+        }
+        if(!settings.isVolumeChecked)
+        {
+            Settings.volumeChecked=sharedPreferences.getBoolean("volume",false);
+        }else{
+            Settings.volumeChecked=settings.isVolumeChecked;
+        }
         Settings.bassStrength = settings.bassStrength;
         Settings.presetPos = settings.presetPos;
         Settings.reverbPreset = settings.reverbPreset;

@@ -83,7 +83,8 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
                     }
                 }else if(position==2)
                 {
-                    Settings.equalizerModel.setReverbChecked(isChecked);
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    editor.putBoolean("reverb",isChecked).commit();
                     if(isChecked)
                         subTitle+="enabled";
                     else{
@@ -91,6 +92,8 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
                     }
                 }else if(position==3)
                 {
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    editor.putBoolean("volume",isChecked).commit();
                     if(isChecked)
                         subTitle+="visible";
                     else{

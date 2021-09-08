@@ -311,6 +311,30 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/volumeLL"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginLeft="20dp"
+                    android:text="Volume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Switch
+                    android:id="@+id/volumeCheck"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <SeekBar
+                android:id="@+id/seekVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
     </LinearLayout>
     <FrameLayout
