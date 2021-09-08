@@ -4,11 +4,20 @@ public class SettingsItem {
     private int icon;
     private String title;
     private String subTitle;
-
-    public SettingsItem(int icon, String title, String subTitle) {
+    private boolean isChecked;
+    public SettingsItem(int icon, String title, String subTitle,boolean isChecked) {
         this.icon = icon;
         this.title = title;
         this.subTitle = subTitle;
+        this.isChecked=isChecked;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 
     public int getIcon() {

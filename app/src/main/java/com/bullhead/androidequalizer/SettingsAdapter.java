@@ -1,6 +1,7 @@
 package com.bullhead.androidequalizer;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +11,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyViewHolder> {
     private ArrayList<SettingsItem> settingsItems;
-
-    public SettingsAdapter(ArrayList<SettingsItem> settingsItems) {
+    private SharedPreferences sharedPreferences;
+    public SettingsAdapter(ArrayList<SettingsItem> settingsItems,SharedPreferences sharedPreferences) {
         this.settingsItems = settingsItems;
+        this.sharedPreferences=sharedPreferences;
     }
 
     @NonNull
@@ -33,11 +36,13 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
         holder.logoImg.setImageResource(settingsItems.get(position).getIcon());
         holder.titleTxt.setText(settingsItems.get(position).getTitle());
         holder.subTitleTxt.setText(settingsItems.get(position).getSubTitle());
+        holder.check.setChecked(settingsItems.get(position).isChecked());
          subTitle=holder.subTitleTxt.getText().toString();
         if(position==0)
         {
-            if(holder.check.isChecked())
-              subTitle+="Enabled";
+            if(sharedPreferences.getBoolean("dark",false)) {
+                subTitle += "Enabled";
+            }
             else{
                 subTitle+="Disabled";
             }
@@ -60,13 +65,19 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
         holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settingsItems.get(position).setChecked(isChecked);
                 subTitle=settingsItems.get(position).getSubTitle();
                 if(position==0)
                 {
-                    if(isChecked)
-                        subTitle+="Enabled";
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    editor.putBoolean("dark",isChecked).commit();
+                    if(isChecked) {
+                        subTitle += "Enabled";
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    }
                     else{
                         subTitle+="Disabled";
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     }
                 }else if(position==2)
                 {

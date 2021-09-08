@@ -3,6 +3,7 @@ package com.bullhead.equalizer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -23,6 +24,7 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -55,6 +57,7 @@ public class EqualizerFragment extends Fragment {
     LineChartView chart;
     public PresetReverb presetReverb;
     public LoudnessEnhancer loudnessEnhancer;
+    RelativeLayout rl;
     int y = 0,z=0;
 
     ImageView    spinnerDropDownIcon;
@@ -163,7 +166,21 @@ public class EqualizerFragment extends Fragment {
                 Settings.equalizerModel.setEqualizerEnabled(isChecked);
             }
         });
+        rl=view.findViewById(R.id.rl);
+        int nightModeFlags =
+                getContext().getResources().getConfiguration().uiMode &
+                        Configuration.UI_MODE_NIGHT_MASK;
+        switch (nightModeFlags)
+        {
+            case Configuration.UI_MODE_NIGHT_YES:
+                rl.setBackgroundColor(getResources().getColor(android.R.color.black));
+                break;
 
+            case Configuration.UI_MODE_NIGHT_NO:
+                rl.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
+                break;
+
+        }
         spinnerDropDownIcon = view.findViewById(R.id.spinner_dropdown_icon);
         spinnerDropDownIcon.setOnClickListener(new View.OnClickListener() {
             @Override

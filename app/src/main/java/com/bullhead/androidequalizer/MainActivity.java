@@ -7,10 +7,12 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 
 import com.bullhead.equalizer.DialogEqualizerFragment;
@@ -22,10 +24,19 @@ import com.google.gson.Gson;
 public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     int sessionId;
+    private SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        nr=getIntent().getIntExtra("nr",0);
+        sharedPreferences=getSharedPreferences("myPref",MODE_PRIVATE);
+        if(sharedPreferences.getBoolean("dark",false))
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         mediaPlayer = MediaPlayer.create(this, R.raw.lenka);
         sessionId = mediaPlayer.getAudioSessionId();
         mediaPlayer.setLooping(true);
@@ -41,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
     }
-
     @Override
     protected void onPause() {
         try {
@@ -55,6 +65,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mediaPlayer = MediaPlayer.create(this, R.raw.lenka);
+        sessionId = mediaPlayer.getAudioSessionId();
+        mediaPlayer.setLooping(true);
+        EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
+                .setAccentColor(Color.parseColor("#4caf50"))
+                .setAudioSessionId(sessionId)
+                .build();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.eqFrame, equalizerFragment).commit();
+        if(nr==1)
+        {
+            loadEqualizerSettings();
+        }
         try {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -67,15 +90,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
-
+    int nr;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.loadPreset) {
+            nr=1;
             loadEqualizerSettings();
             return true;
         }else if(item.getItemId() == R.id.savePreset)
@@ -84,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }else if(item.getItemId() == R.id.settings)
         {
-            startActivity(new Intent(getApplicationContext(),Settings1Activity.class));
+            Intent i=new Intent(getApplicationContext(),Settings1Activity.class);
+            i.putExtra("nr",nr);
+            startActivity(i);
             return true;
         }
         return super.onOptionsItemSelected(item);
