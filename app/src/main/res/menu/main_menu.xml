@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/itemEqDialog"
-        android:title="@string/show_eq_dialog" />
+        android:id="@+id/loadPreset"
+        android:title="@string/load_preset" />
+    <item
+        android:id="@+id/savePreset"
+        android:title="@string/save_as_preset" />
+    <item
+        android:id="@+id/removeAds"
+        android:title="@string/remove_ads" />
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings" />
 </menu>

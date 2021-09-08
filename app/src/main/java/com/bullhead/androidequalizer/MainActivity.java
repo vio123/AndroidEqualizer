@@ -1,5 +1,6 @@
 package com.bullhead.androidequalizer;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -20,14 +21,13 @@ import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
-
+    int sessionId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadEqualizerSettings();
         mediaPlayer = MediaPlayer.create(this, R.raw.lenka);
-        final int sessionId = mediaPlayer.getAudioSessionId();
+        sessionId = mediaPlayer.getAudioSessionId();
         mediaPlayer.setLooping(true);
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-        saveEqualizerSettings();
     }
 
     @Override
@@ -94,8 +92,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.itemEqDialog) {
-            showInDialog();
+        if (item.getItemId() == R.id.loadPreset) {
+            loadEqualizerSettings();
+            return true;
+        }else if(item.getItemId() == R.id.savePreset)
+        {
+            saveEqualizerSettings();
+            return true;
+        }else if(item.getItemId() == R.id.settings)
+        {
+            startActivity(new Intent(getApplicationContext(),Settings1Activity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -137,6 +143,13 @@ public class MainActivity extends AppCompatActivity {
         Settings.seekbarpos = settings.seekbarpos;
         Settings.equalizerModel = model;
         Settings.loudnessStrength=settings.loudnessStrength;
+        EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
+                .setAccentColor(Color.parseColor("#4caf50"))
+                .setAudioSessionId(sessionId)
+                .build();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.eqFrame, equalizerFragment)
+                .commit();
     }
 
     public static final String PREF_KEY = "equalizer";

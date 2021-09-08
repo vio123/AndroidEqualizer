@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AndroidEqualizer</string>
     <string name="show_eq_dialog">Show EQ Dialog</string>
+    <string name="load_preset">Load Preset</string>
+    <string name="save_as_preset">Save As Preset</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="settings">Settings</string>
 </resources>
