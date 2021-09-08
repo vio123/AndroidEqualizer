@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             settings.presetPos = Settings.equalizerModel.getPresetPos();
             settings.reverbPreset = Settings.equalizerModel.getReverbPreset();
             settings.seekbarpos = Settings.equalizerModel.getSeekbarpos();
-
+            settings.loudnessStrength=Settings.equalizerModel.getLoudnessStrength();
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
             Gson gson = new Gson();
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         model.setPresetPos(settings.presetPos);
         model.setReverbPreset(settings.reverbPreset);
         model.setSeekbarpos(settings.seekbarpos);
-
+         model.setLoudnessStrength(settings.loudnessStrength);
         Settings.isEqualizerEnabled = true;
         Settings.isEqualizerReloaded = true;
         Settings.bassStrength = settings.bassStrength;
@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         Settings.reverbPreset = settings.reverbPreset;
         Settings.seekbarpos = settings.seekbarpos;
         Settings.equalizerModel = model;
+        Settings.loudnessStrength=settings.loudnessStrength;
     }
 
     public static final String PREF_KEY = "equalizer";

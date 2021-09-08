@@ -203,7 +203,15 @@ public class EqualizerFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-
+            if(loudnessEnhancer!=null)
+            {
+                try{
+                    z= (int) ((loudnessEnhancer.getTargetGain()*19)/16);
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
             if (presetReverb != null) {
                 try {
                     y = (presetReverb.getPreset() * 19) / 6;
@@ -223,9 +231,16 @@ public class EqualizerFragment extends Fragment {
             } else {
                 reverbController.setProgress(y);
             }
+            if(z==0)
+            {
+                loudnessController.setProgress(1);
+            }else{
+                loudnessController.setProgress(z);
+            }
         } else {
             int x = ((Settings.bassStrength * 19) / 1000);
             y = (Settings.reverbPreset * 19) / 6;
+            z=(Settings.loudnessStrength*19)/6;
             if (x == 0) {
                 bassController.setProgress(1);
             } else {
@@ -237,8 +252,13 @@ public class EqualizerFragment extends Fragment {
             } else {
                 reverbController.setProgress(y);
             }
+            if(z==0)
+            {
+                loudnessController.setProgress(1);
+            }else{
+                loudnessController.setProgress(z);
+            }
         }
-
         bassController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
             @Override
             public void onProgressChanged(int progress) {
@@ -251,7 +271,20 @@ public class EqualizerFragment extends Fragment {
                 }
             }
         });
-
+        loudnessController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
+            @Override
+            public void onProgressChanged(int progress) {
+                Settings.loudnessStrength=(short)((progress*6)/19);
+                Settings.equalizerModel.setLoudnessStrength(Settings.loudnessStrength);
+                try{
+                    loudnessEnhancer.setTargetGain(Settings.loudnessStrength);
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                z=progress;
+            }
+        });
         reverbController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
             @Override
             public void onProgressChanged(int progress) {
