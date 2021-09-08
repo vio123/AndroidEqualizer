@@ -13,12 +13,21 @@ public class EqualizerModel implements Serializable {
     private short   reverbPreset;
     private short   bassStrength;
     private short   loudnessStrength;
-
+    private boolean reverbChecked;
     public EqualizerModel() {
         isEqualizerEnabled = true;
         reverbPreset       = -1;
         bassStrength       = -1;
         loudnessStrength   = -1;
+        reverbChecked=false;
+    }
+
+    public boolean isReverbChecked() {
+        return reverbChecked;
+    }
+
+    public void setReverbChecked(boolean reverbChecked) {
+        this.reverbChecked = reverbChecked;
     }
 
     public short getLoudnessStrength() {

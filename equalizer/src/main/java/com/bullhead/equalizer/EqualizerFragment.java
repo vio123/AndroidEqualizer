@@ -57,6 +57,7 @@ public class EqualizerFragment extends Fragment {
     LineChartView chart;
     public PresetReverb presetReverb;
     public LoudnessEnhancer loudnessEnhancer;
+    public LinearLayout reverbLL;
     RelativeLayout rl;
     int y = 0,z=0;
 
@@ -153,6 +154,7 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        reverbLL=view.findViewById(R.id.reverbLL);
         fragTitle = view.findViewById(R.id.equalizer_fragment_title);
         equalizerSwitch = view.findViewById(R.id.equalizer_switch);
         equalizerSwitch.setChecked(Settings.isEqualizerEnabled);
@@ -166,6 +168,12 @@ public class EqualizerFragment extends Fragment {
                 Settings.equalizerModel.setEqualizerEnabled(isChecked);
             }
         });
+        if(Settings.equalizerModel.isReverbChecked())
+        {
+            reverbLL.setVisibility(View.VISIBLE);
+        }else{
+            reverbLL.setVisibility(View.GONE);
+        }
         rl=view.findViewById(R.id.rl);
         int nightModeFlags =
                 getContext().getResources().getConfiguration().uiMode &

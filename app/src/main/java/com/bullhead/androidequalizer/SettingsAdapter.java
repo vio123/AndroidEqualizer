@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bullhead.equalizer.Settings;
+
 import java.util.ArrayList;
 
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyViewHolder> {
@@ -81,6 +83,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
                     }
                 }else if(position==2)
                 {
+                    Settings.equalizerModel.setReverbChecked(isChecked);
                     if(isChecked)
                         subTitle+="enabled";
                     else{
