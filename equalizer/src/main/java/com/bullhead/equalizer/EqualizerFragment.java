@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
+import android.media.audiofx.LoudnessEnhancer;
 import android.media.audiofx.PresetReverb;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -53,9 +54,8 @@ public class EqualizerFragment extends Fragment {
     public BassBoost bassBoost;
     LineChartView chart;
     public PresetReverb presetReverb;
-    ImageView backBtn;
-
-    int y = 0;
+    public LoudnessEnhancer loudnessEnhancer;
+    int y = 0,z=0;
 
     ImageView    spinnerDropDownIcon;
     TextView     fragTitle;
@@ -63,7 +63,7 @@ public class EqualizerFragment extends Fragment {
 
     SeekBar[] seekBarFinal = new SeekBar[5];
 
-    AnalogController bassController, reverbController;
+    AnalogController bassController, reverbController,loudnessController;
 
     Spinner presetSpinner;
 
@@ -120,7 +120,9 @@ public class EqualizerFragment extends Fragment {
         presetReverb = new PresetReverb(0, audioSesionId);
         presetReverb.setPreset(Settings.equalizerModel.getReverbPreset());
         presetReverb.setEnabled(Settings.isEqualizerEnabled);
-
+        loudnessEnhancer=new LoudnessEnhancer(audioSesionId);
+        loudnessEnhancer.setTargetGain(Settings.equalizerModel.getLoudnessStrength());
+        loudnessEnhancer.setEnabled(Settings.isEqualizerEnabled);
         mEqualizer.setEnabled(Settings.isEqualizerEnabled);
 
         if (Settings.presetPos == 0) {
@@ -148,21 +150,7 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        backBtn = view.findViewById(R.id.equalizer_back_btn);
-        backBtn.setVisibility(showBackButton ? View.VISIBLE : View.GONE);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity() != null) {
-                    getActivity().onBackPressed();
-                }
-            }
-        });
-
         fragTitle = view.findViewById(R.id.equalizer_fragment_title);
-
-
         equalizerSwitch = view.findViewById(R.id.equalizer_switch);
         equalizerSwitch.setChecked(Settings.isEqualizerEnabled);
         equalizerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -195,10 +183,10 @@ public class EqualizerFragment extends Fragment {
 
         bassController   = view.findViewById(R.id.controllerBass);
         reverbController = view.findViewById(R.id.controller3D);
-
-        bassController.setLabel("BASS");
-        reverbController.setLabel("3D");
-
+        loudnessController=view.findViewById(R.id.controllerLoudness);
+        bassController.setLabel("Bass Boost");
+        reverbController.setLabel("Virtualizer");
+        loudnessController.setLabel("Loudness");
         bassController.circlePaint2.setColor(themeColor);
         bassController.linePaint.setColor(themeColor);
         bassController.invalidate();

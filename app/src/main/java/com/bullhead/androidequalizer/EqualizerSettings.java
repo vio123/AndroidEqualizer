@@ -5,4 +5,5 @@ public class EqualizerSettings {
     public int presetPos;
     public short reverbPreset;
     public short bassStrength;
+    public short loudnessStrength;
 }
