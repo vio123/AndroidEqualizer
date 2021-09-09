@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,7 +63,7 @@ public class EqualizerFragment extends Fragment {
     SeekBar seekVolume;
     RelativeLayout rl;
     int y = 0,z=0;
-
+    Switch reverbSwitch,switchBass,switchLoudness,switchController3D,volumeCheck;
     ImageView    spinnerDropDownIcon;
     TextView     fragTitle;
     LinearLayout mLinearLayout;
@@ -160,6 +161,12 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        seekVolume=view.findViewById(R.id.seekVolume);
+        volumeCheck=view.findViewById(R.id.volumeCheck);
+        switchController3D=view.findViewById(R.id.switchController3D);
+        switchBass=view.findViewById(R.id.switchBass);
+        switchLoudness=view.findViewById(R.id.switchLoudness);
+        reverbSwitch=view.findViewById(R.id.reverbSwitch);
         sharedPreferences= ctx.getSharedPreferences("myPref",Context.MODE_PRIVATE);
         reverbLL=view.findViewById(R.id.reverbLL);
         volumeLL=view.findViewById(R.id.volumeLL);
@@ -176,6 +183,18 @@ public class EqualizerFragment extends Fragment {
                 Settings.equalizerModel.setEqualizerEnabled(isChecked);
             }
         });
+        if(volumeCheck.isChecked())
+        {
+            seekVolume.setEnabled(true);
+        }else{
+            seekVolume.setEnabled(false);
+        }
+        volumeCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                seekVolume.setEnabled(isChecked);
+            }
+        });
         if(sharedPreferences.getBoolean("reverb",false))
         {
             reverbLL.setVisibility(View.VISIBLE);
@@ -188,6 +207,63 @@ public class EqualizerFragment extends Fragment {
         }else{
             volumeLL.setVisibility(View.GONE);
         }
+        if(switchBass.isChecked())
+        {
+            bassBoost.setEnabled(true);
+        }else{
+            bassBoost.setEnabled(false);
+        }
+        if(switchLoudness.isChecked())
+        {
+            loudnessEnhancer.setEnabled(true);
+        }else{
+            loudnessEnhancer.setEnabled(false);
+        }
+        if(switchController3D.isChecked())
+        {
+            presetReverb.setEnabled(true);
+        }else{
+            presetReverb.setEnabled(false);
+        }
+        switchBass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                bassBoost.setEnabled(isChecked);
+            }
+        });
+        switchLoudness.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                loudnessEnhancer.setEnabled(isChecked);
+            }
+        });
+        switchController3D.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                presetReverb.setEnabled(isChecked);
+            }
+        });
+        if(reverbSwitch.isChecked())
+        {
+            for ( int i = 0; i < reverbLL.getChildCount();  i++ ){
+                View view1 = reverbLL.getChildAt(i);
+                view1.setEnabled(true); // Or whatever you want to do with the view.
+            }
+        }else{
+            for ( int i = 0; i < reverbLL.getChildCount();  i++ ){
+                View view1 = reverbLL.getChildAt(i);
+                view1.setEnabled(false); // Or whatever you want to do with the view.
+            }
+        }
+        reverbSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for ( int i = 0; i < reverbLL.getChildCount();  i++ ){
+                    View view1 = reverbLL.getChildAt(i);
+                    view1.setEnabled(isChecked); // Or whatever you want to do with the view.
+                }
+            }
+        });
         rl=view.findViewById(R.id.rl);
         int nightModeFlags =
                 getContext().getResources().getConfiguration().uiMode &
