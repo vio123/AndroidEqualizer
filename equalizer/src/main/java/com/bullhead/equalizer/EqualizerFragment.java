@@ -64,6 +64,7 @@ public class EqualizerFragment extends Fragment {
     SeekBar seekVolume;
     BubbleSeekBar reverbSeek;
     RelativeLayout rl;
+    Button bassBtn,loudBtn,controllerBtn,eqBtn;
     int y = 0,z=0;
     Switch reverbSwitch,switchBass,switchLoudness,switchController3D,volumeCheck;
     ImageView    spinnerDropDownIcon;
@@ -163,6 +164,10 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        eqBtn=view.findViewById(R.id.eqBtn);
+        controllerBtn=view.findViewById(R.id.controllerBtn);
+        bassBtn=view.findViewById(R.id.bassBtn);
+        loudBtn=view.findViewById(R.id.loudBtn);
         eq=view.findViewById(R.id.eq);
         reverbSeek=view.findViewById(R.id.reverbSeek);
         seekVolume=view.findViewById(R.id.seekVolume);
@@ -186,19 +191,17 @@ public class EqualizerFragment extends Fragment {
                 bassBoost.setEnabled(isChecked);
                 presetReverb.setEnabled(isChecked);
                 Settings.isEqualizerEnabled = isChecked;
-                Settings.equalizerModel.setEqualizerEnabled(isChecked);
-                for ( int i = 0; i < eq.getChildCount();  i++ ){
-                    View view1 = eq.getChildAt(i);
-                    if(isChecked)
-                    {
-                       view1.setVisibility(View.VISIBLE);
-                    }else{
-                        view1.setVisibility(View.GONE);
-                    }
+                if(isChecked)
+                {
+                    eqBtn.setVisibility(View.INVISIBLE);
+                    eq.setAlpha(0.5f);
+                }else{
+                    eqBtn.setVisibility(View.VISIBLE);
+                    eq.setAlpha(1);
                 }
-                seekBarFinal[0].setEnabled(isChecked);
             }
         });
+
         if(volumeCheck.isChecked())
         {
             seekVolume.setEnabled(true);
@@ -274,7 +277,7 @@ public class EqualizerFragment extends Fragment {
 
         equalizerBlocker = view.findViewById(R.id.equalizerBlocker);
 
-        
+
         paint   = new Paint();
         dataset = new LineSet();
 
@@ -298,30 +301,33 @@ public class EqualizerFragment extends Fragment {
         loudnessController.invalidate();
         if(switchBass.isChecked())
         {
+            bassBtn.setVisibility(View.INVISIBLE);
             bassBoost.setEnabled(true);
             bassController.setAlpha(1);
         }else{
+            bassBtn.setVisibility(View.VISIBLE);
             bassBoost.setEnabled(false);
             bassController.setAlpha(0.5f);
-            bassController.setProgress(1);
         }
         if(switchLoudness.isChecked())
         {
+            loudBtn.setVisibility(View.INVISIBLE);
             loudnessEnhancer.setEnabled(true);
             loudnessController.setAlpha(1);
         }else{
             loudnessEnhancer.setEnabled(false);
             loudnessController.setAlpha(0.5f);
-            loudnessController.setProgress(1);
+            loudBtn.setVisibility(View.VISIBLE);
         }
         if(switchController3D.isChecked())
         {
+            controllerBtn.setVisibility(View.INVISIBLE);
             presetReverb.setEnabled(true);
             reverbController.setAlpha(1);
         }else{
             presetReverb.setEnabled(false);
             reverbController.setAlpha(0.5f);
-            reverbController.setProgress(2);
+            controllerBtn.setVisibility(View.VISIBLE);
         }
         switchBass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -329,10 +335,11 @@ public class EqualizerFragment extends Fragment {
                 bassBoost.setEnabled(isChecked);
                 if(isChecked)
                 {
+                    bassBtn.setVisibility(View.INVISIBLE);
                     bassController.setAlpha(1);
                 }else{
                     bassController.setAlpha(0.5f);
-                    bassController.setProgress(1);
+                    bassBtn.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -343,9 +350,10 @@ public class EqualizerFragment extends Fragment {
                 if(isChecked)
                 {
                     loudnessController.setAlpha(1);
+                    loudBtn.setVisibility(View.INVISIBLE);
                 }else{
                     loudnessController.setAlpha(0.5f);
-                    loudnessController.setProgress(1);
+                    loudBtn.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -356,9 +364,10 @@ public class EqualizerFragment extends Fragment {
                 if(isChecked)
                 {
                     reverbController.setAlpha(1);
+                    controllerBtn.setVisibility(View.INVISIBLE);
                 }else{
                     reverbController.setAlpha(0.5f);
-                    reverbController.setProgress(1);
+                    controllerBtn.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -431,7 +440,6 @@ public class EqualizerFragment extends Fragment {
         bassController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
             @Override
             public void onProgressChanged(int progress) {
-                if(switchBass.isChecked()) {
                     Settings.bassStrength = (short) (((float) 1000 / 19) * (progress));
                     try {
                         bassBoost.setStrength(Settings.bassStrength);
@@ -439,15 +447,11 @@ public class EqualizerFragment extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else{
-                    bassController.setProgress(1);
                 }
-            }
         });
         loudnessController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
             @Override
             public void onProgressChanged(int progress) {
-                if(switchLoudness.isChecked()) {
                     Settings.loudnessStrength = (short) ((progress * 6) / 19);
                     Settings.equalizerModel.setLoudnessStrength(Settings.loudnessStrength);
                     try {
@@ -455,16 +459,11 @@ public class EqualizerFragment extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    z = progress;
-                }else{
-                    loudnessController.setProgress(1);
-                }
             }
         });
             reverbController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
                 @Override
                 public void onProgressChanged(int progress) {
-                    if(switchController3D.isChecked()) {
                         Settings.reverbPreset = (short) ((progress * 6) / 19);
                         Settings.equalizerModel.setReverbPreset(Settings.reverbPreset);
                         try {
@@ -473,9 +472,6 @@ public class EqualizerFragment extends Fragment {
                             e.printStackTrace();
                         }
                         y = progress;
-                    }else{
-                        reverbController.setProgress(1);
-                    }
                 }
             });
 

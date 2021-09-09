@@ -48,4 +48,5 @@ dependencies {
     implementation 'com.diogobernardino:williamchart:2.2'
     implementation 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.0'
     implementation 'com.xw.repo:bubbleseekbar:3.20-lite'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
 }
