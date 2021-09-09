@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.bullhead.equalizer.DialogEqualizerFragment;
@@ -22,6 +24,8 @@ import com.bullhead.equalizer.EqualizerFragment;
 import com.bullhead.equalizer.EqualizerModel;
 import com.bullhead.equalizer.Settings;
 import com.google.gson.Gson;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         nr=getIntent().getIntExtra("nr",0);
         sharedPreferences=getSharedPreferences("myPref",MODE_PRIVATE);
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"black\">" + "Equalizer" + "</font>"));
         if(sharedPreferences.getBoolean("dark",false))
         {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);

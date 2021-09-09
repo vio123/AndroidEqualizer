@@ -183,6 +183,14 @@ public class EqualizerFragment extends Fragment {
         equalizerSwitch = view.findViewById(R.id.equalizer_switch);
         equalizerSwitch.setChecked(Settings.isEqualizerEnabled);
         chart   = view.findViewById(R.id.lineChart);
+        if(equalizerSwitch.isChecked())
+        {
+            eqBtn.setVisibility(View.INVISIBLE);
+            eq.setAlpha(1);
+        }else{
+            eqBtn.setVisibility(View.VISIBLE);
+            eq.setAlpha(0.5f);
+        }
         equalizerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -194,10 +202,10 @@ public class EqualizerFragment extends Fragment {
                 if(isChecked)
                 {
                     eqBtn.setVisibility(View.INVISIBLE);
-                    eq.setAlpha(0.5f);
+                    eq.setAlpha(1);
                 }else{
                     eqBtn.setVisibility(View.VISIBLE);
-                    eq.setAlpha(1);
+                    eq.setAlpha(0.5f);
                 }
             }
         });
