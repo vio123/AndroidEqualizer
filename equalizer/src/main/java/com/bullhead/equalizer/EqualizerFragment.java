@@ -41,6 +41,7 @@ import com.db.chart.model.LineSet;
 import com.db.chart.view.AxisController;
 import com.db.chart.view.ChartView;
 import com.db.chart.view.LineChartView;
+import com.xw.repo.BubbleSeekBar;
 
 import java.util.ArrayList;
 
@@ -61,12 +62,13 @@ public class EqualizerFragment extends Fragment {
     public LoudnessEnhancer loudnessEnhancer;
     public LinearLayout reverbLL,volumeLL;
     SeekBar seekVolume;
+    BubbleSeekBar reverbSeek;
     RelativeLayout rl;
     int y = 0,z=0;
     Switch reverbSwitch,switchBass,switchLoudness,switchController3D,volumeCheck;
     ImageView    spinnerDropDownIcon;
     TextView     fragTitle;
-    LinearLayout mLinearLayout;
+    LinearLayout mLinearLayout,eq;
 
     SeekBar[] seekBarFinal = new SeekBar[5];
 
@@ -161,6 +163,8 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        eq=view.findViewById(R.id.eq);
+        reverbSeek=view.findViewById(R.id.reverbSeek);
         seekVolume=view.findViewById(R.id.seekVolume);
         volumeCheck=view.findViewById(R.id.volumeCheck);
         switchController3D=view.findViewById(R.id.switchController3D);
@@ -173,14 +177,26 @@ public class EqualizerFragment extends Fragment {
         fragTitle = view.findViewById(R.id.equalizer_fragment_title);
         equalizerSwitch = view.findViewById(R.id.equalizer_switch);
         equalizerSwitch.setChecked(Settings.isEqualizerEnabled);
+        chart   = view.findViewById(R.id.lineChart);
         equalizerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mEqualizer.setEnabled(isChecked);
+                loudnessController.setEnabled(isChecked);
                 bassBoost.setEnabled(isChecked);
                 presetReverb.setEnabled(isChecked);
                 Settings.isEqualizerEnabled = isChecked;
                 Settings.equalizerModel.setEqualizerEnabled(isChecked);
+                for ( int i = 0; i < eq.getChildCount();  i++ ){
+                    View view1 = eq.getChildAt(i);
+                    if(isChecked)
+                    {
+                       view1.setVisibility(View.VISIBLE);
+                    }else{
+                        view1.setVisibility(View.GONE);
+                    }
+                }
+                seekBarFinal[0].setEnabled(isChecked);
             }
         });
         if(volumeCheck.isChecked())
@@ -207,42 +223,6 @@ public class EqualizerFragment extends Fragment {
         }else{
             volumeLL.setVisibility(View.GONE);
         }
-        if(switchBass.isChecked())
-        {
-            bassBoost.setEnabled(true);
-        }else{
-            bassBoost.setEnabled(false);
-        }
-        if(switchLoudness.isChecked())
-        {
-            loudnessEnhancer.setEnabled(true);
-        }else{
-            loudnessEnhancer.setEnabled(false);
-        }
-        if(switchController3D.isChecked())
-        {
-            presetReverb.setEnabled(true);
-        }else{
-            presetReverb.setEnabled(false);
-        }
-        switchBass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                bassBoost.setEnabled(isChecked);
-            }
-        });
-        switchLoudness.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                loudnessEnhancer.setEnabled(isChecked);
-            }
-        });
-        switchController3D.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                presetReverb.setEnabled(isChecked);
-            }
-        });
         if(reverbSwitch.isChecked())
         {
             for ( int i = 0; i < reverbLL.getChildCount();  i++ ){
@@ -272,13 +252,17 @@ public class EqualizerFragment extends Fragment {
         {
             case Configuration.UI_MODE_NIGHT_YES:
                 rl.setBackgroundColor(getResources().getColor(android.R.color.black));
+                themeColor=Color.parseColor("#FF5722");
                 break;
 
             case Configuration.UI_MODE_NIGHT_NO:
-                rl.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_bright));
+                //rl.setBackgroundColor(getResources().getColor(R.color.purple_700));
+                themeColor=Color.parseColor("#E81515");
                 break;
-
         }
+        reverbSeek.setBubbleColor(themeColor);
+        reverbSeek.setThumbColor(themeColor);
+        reverbSeek.setSecondTrackColor(themeColor);
         spinnerDropDownIcon = view.findViewById(R.id.spinner_dropdown_icon);
         spinnerDropDownIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,13 +270,11 @@ public class EqualizerFragment extends Fragment {
                 presetSpinner.performClick();
             }
         });
-
         presetSpinner = view.findViewById(R.id.equalizer_preset_spinner);
 
         equalizerBlocker = view.findViewById(R.id.equalizerBlocker);
 
-
-        chart   = view.findViewById(R.id.lineChart);
+        
         paint   = new Paint();
         dataset = new LineSet();
 
@@ -304,11 +286,82 @@ public class EqualizerFragment extends Fragment {
         loudnessController.setLabel("Loudness");
         bassController.circlePaint2.setColor(themeColor);
         bassController.linePaint.setColor(themeColor);
+        bassController.textPaint.setColor(themeColor);
         bassController.invalidate();
         reverbController.circlePaint2.setColor(themeColor);
-        bassController.linePaint.setColor(themeColor);
+        reverbController.linePaint.setColor(themeColor);
+        reverbController.textPaint.setColor(themeColor);
         reverbController.invalidate();
-
+        loudnessController.circlePaint2.setColor(themeColor);
+        loudnessController.linePaint.setColor(themeColor);
+        loudnessController.textPaint.setColor(themeColor);
+        loudnessController.invalidate();
+        if(switchBass.isChecked())
+        {
+            bassBoost.setEnabled(true);
+            bassController.setAlpha(1);
+        }else{
+            bassBoost.setEnabled(false);
+            bassController.setAlpha(0.5f);
+            bassController.setProgress(1);
+        }
+        if(switchLoudness.isChecked())
+        {
+            loudnessEnhancer.setEnabled(true);
+            loudnessController.setAlpha(1);
+        }else{
+            loudnessEnhancer.setEnabled(false);
+            loudnessController.setAlpha(0.5f);
+            loudnessController.setProgress(1);
+        }
+        if(switchController3D.isChecked())
+        {
+            presetReverb.setEnabled(true);
+            reverbController.setAlpha(1);
+        }else{
+            presetReverb.setEnabled(false);
+            reverbController.setAlpha(0.5f);
+            reverbController.setProgress(2);
+        }
+        switchBass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                bassBoost.setEnabled(isChecked);
+                if(isChecked)
+                {
+                    bassController.setAlpha(1);
+                }else{
+                    bassController.setAlpha(0.5f);
+                    bassController.setProgress(1);
+                }
+            }
+        });
+        switchLoudness.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                loudnessEnhancer.setEnabled(isChecked);
+                if(isChecked)
+                {
+                    loudnessController.setAlpha(1);
+                }else{
+                    loudnessController.setAlpha(0.5f);
+                    loudnessController.setProgress(1);
+                }
+            }
+        });
+        switchController3D.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                presetReverb.setEnabled(isChecked);
+                if(isChecked)
+                {
+                    reverbController.setAlpha(1);
+                }else{
+                    reverbController.setAlpha(0.5f);
+                    reverbController.setProgress(1);
+                }
+            }
+        });
         if (!Settings.isEqualizerReloaded) {
             int x = 0;
             if (bassBoost != null) {
@@ -340,11 +393,12 @@ public class EqualizerFragment extends Fragment {
             } else {
                 bassController.setProgress(x);
             }
-
-            if (y == 0) {
-                reverbController.setProgress(1);
-            } else {
-                reverbController.setProgress(y);
+            if(switchController3D.isChecked()) {
+                if (y == 0) {
+                    reverbController.setProgress(1);
+                } else {
+                    reverbController.setProgress(y);
+                }
             }
             if(z==0)
             {
@@ -377,42 +431,53 @@ public class EqualizerFragment extends Fragment {
         bassController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
             @Override
             public void onProgressChanged(int progress) {
-                Settings.bassStrength = (short) (((float) 1000 / 19) * (progress));
-                try {
-                    bassBoost.setStrength(Settings.bassStrength);
-                    Settings.equalizerModel.setBassStrength(Settings.bassStrength);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if(switchBass.isChecked()) {
+                    Settings.bassStrength = (short) (((float) 1000 / 19) * (progress));
+                    try {
+                        bassBoost.setStrength(Settings.bassStrength);
+                        Settings.equalizerModel.setBassStrength(Settings.bassStrength);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    bassController.setProgress(1);
                 }
             }
         });
         loudnessController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
             @Override
             public void onProgressChanged(int progress) {
-                Settings.loudnessStrength=(short)((progress*6)/19);
-                Settings.equalizerModel.setLoudnessStrength(Settings.loudnessStrength);
-                try{
-                    loudnessEnhancer.setTargetGain(Settings.loudnessStrength);
-                }catch (Exception e)
-                {
-                    e.printStackTrace();
+                if(switchLoudness.isChecked()) {
+                    Settings.loudnessStrength = (short) ((progress * 6) / 19);
+                    Settings.equalizerModel.setLoudnessStrength(Settings.loudnessStrength);
+                    try {
+                        loudnessEnhancer.setTargetGain(Settings.loudnessStrength);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    z = progress;
+                }else{
+                    loudnessController.setProgress(1);
                 }
-                z=progress;
             }
         });
-        reverbController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
-            @Override
-            public void onProgressChanged(int progress) {
-                Settings.reverbPreset = (short) ((progress * 6) / 19);
-                Settings.equalizerModel.setReverbPreset(Settings.reverbPreset);
-                try {
-                    presetReverb.setPreset(Settings.reverbPreset);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            reverbController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
+                @Override
+                public void onProgressChanged(int progress) {
+                    if(switchController3D.isChecked()) {
+                        Settings.reverbPreset = (short) ((progress * 6) / 19);
+                        Settings.equalizerModel.setReverbPreset(Settings.reverbPreset);
+                        try {
+                            presetReverb.setPreset(Settings.reverbPreset);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        y = progress;
+                    }else{
+                        reverbController.setProgress(1);
+                    }
                 }
-                y = progress;
-            }
-        });
+            });
 
         mLinearLayout = view.findViewById(R.id.equalizerContainer);
 
@@ -489,7 +554,7 @@ public class EqualizerFragment extends Fragment {
                     break;
             }
             seekBarFinal[i] = seekBar;
-            seekBar.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_IN));
+            //seekBar.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(colo, PorterDuff.Mode.SRC_IN));
             seekBar.getThumb().setColorFilter(new PorterDuffColorFilter(themeColor, PorterDuff.Mode.SRC_IN));
             seekBar.setId(i);
 //            seekBar.setLayoutParams(layoutParams);
@@ -538,7 +603,7 @@ public class EqualizerFragment extends Fragment {
 
         equalizeSound();
 
-        paint.setColor(Color.parseColor("#555555"));
+        //paint.setColor(Color.parseColor("#555555"));
         paint.setStrokeWidth((float) (1.10 * Settings.ratio));
 
         dataset.setColor(themeColor);

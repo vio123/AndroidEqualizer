@@ -33,6 +33,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/eq"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/equalizer_action_container"
@@ -269,10 +270,10 @@
                     android:layout_height="wrap_content"/>
             </RelativeLayout>
             <com.xw.repo.BubbleSeekBar
+                android:id="@+id/reverbSeek"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:bsb_auto_adjust_section_mark="true"
-                app:bsb_second_track_color="@color/color_blue"
                 app:bsb_section_count="6"
                 app:bsb_min="0"
                 app:bsb_max="120"
@@ -334,6 +335,7 @@
                 android:orientation="vertical">
                 <com.bullhead.equalizer.AnalogController
                     android:id="@+id/controller3D"
+                    android:clickable="false"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
