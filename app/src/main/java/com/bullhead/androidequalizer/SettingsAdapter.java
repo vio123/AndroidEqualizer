@@ -62,6 +62,8 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
             else{
                 subTitle+="hidden";
             }
+        }else{
+            holder.check.setVisibility(View.GONE);
         }
         holder.subTitleTxt.setText(subTitle);
         holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

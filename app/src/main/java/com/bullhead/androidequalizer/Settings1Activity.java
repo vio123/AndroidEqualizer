@@ -56,5 +56,7 @@ public class Settings1Activity extends AppCompatActivity {
         settingsItems.add(new SettingsItem(R.drawable.ic_audio,"Always attach to Global Mix","Enable this only if you are facing issues with me the atachment of the effects", false));
         settingsItems.add(new SettingsItem(R.drawable.ic_audio,"Reverb Effects","Reverb effects are ",sharedPreferences.getBoolean("reverb",false)));
         settingsItems.add(new SettingsItem(R.drawable.ic_audio,"Volume Slider","Volume slider is ",sharedPreferences.getBoolean("volume",false)));
+        settingsItems.add(new SettingsItem(R.drawable.ic_notification,"Hide/Show Notifications","Open app's notification settings",false));
+        settingsItems.add(new SettingsItem(R.drawable.ic_battery,"Disable Baterry Optimization","Disable battery optimization for equalizer for better functioning",false));
     }
 }
