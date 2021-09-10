@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.lenka);
         sessionId = mediaPlayer.getAudioSessionId();
         mediaPlayer.setLooping(true);
+        mediaPlayer.pause();
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
@@ -84,16 +85,6 @@ public class MainActivity extends AppCompatActivity {
         if(nr==1)
         {
             loadEqualizerSettings();
-        }
-        try {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mediaPlayer.start();
-                }
-            }, 2000);
-        } catch (Exception ex) {
-            //ignore
         }
     }
 
