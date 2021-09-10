@@ -350,11 +350,12 @@
                     android:alpha="0"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60ssp"/>
+
                 <com.bullhead.equalizer.AnalogController
                     android:id="@+id/controller3D"
-                    android:clickable="false"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60ssp"/>
+                    android:layout_height="@dimen/_60ssp"
+                    android:clickable="false" />
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_below="@+id/controller3D"
                     android:layout_centerHorizontal="true"

@@ -166,11 +166,13 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mLinearLayout = view.findViewById(R.id.equalizerContainer);
         presetSpinner = view.findViewById(R.id.equalizer_preset_spinner);
         eqBtn=view.findViewById(R.id.eqBtn);
         controllerBtn=view.findViewById(R.id.controllerBtn);
         bassBtn=view.findViewById(R.id.bassBtn);
         loudBtn=view.findViewById(R.id.loudBtn);
+        spinnerDropDownIcon = view.findViewById(R.id.spinner_dropdown_icon);
         eq=view.findViewById(R.id.eq);
         reverbSeek=view.findViewById(R.id.reverbSeek);
         seekVolume=view.findViewById(R.id.seekVolume);
@@ -186,14 +188,6 @@ public class EqualizerFragment extends Fragment {
         equalizerSwitch = view.findViewById(R.id.equalizer_switch);
         equalizerSwitch.setChecked(Settings.isEqualizerEnabled);
         chart   = view.findViewById(R.id.lineChart);
-        if(equalizerSwitch.isChecked())
-        {
-            eqBtn.setVisibility(View.INVISIBLE);
-            eq.setAlpha(1);
-        }else{
-            eqBtn.setVisibility(View.VISIBLE);
-            eq.setAlpha(0.5f);
-        }
         equalizerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -201,14 +195,42 @@ public class EqualizerFragment extends Fragment {
                 loudnessController.setEnabled(isChecked);
                 bassBoost.setEnabled(isChecked);
                 presetReverb.setEnabled(isChecked);
+                presetSpinner.setEnabled(isChecked);
+                spinnerDropDownIcon.setEnabled(isChecked);
+                if(!switchBass.isChecked())
+                {
+                    switchBass.setEnabled(isChecked);
+                }
+                if(!switchLoudness.isChecked())
+                {
+                    switchLoudness.setEnabled(isChecked);
+                }
+                if(!switchController3D.isChecked())
+                {
+                    switchController3D.setEnabled(isChecked);
+                }
+                if(!reverbSwitch.isChecked())
+                {
+                    reverbSwitch.setEnabled(isChecked);
+                }
+                if(!volumeCheck.isChecked())
+                {
+                    volumeCheck.setEnabled(isChecked);
+                }
                 Settings.isEqualizerEnabled = isChecked;
+                for(int i=0;i<5;++i)
+                {
+                    seekBarFinal[i].setEnabled(isChecked);
+                }
                 if(isChecked)
                 {
-                    eqBtn.setVisibility(View.INVISIBLE);
-                    eq.setAlpha(1);
+                    //eqBtn.setVisibility(View.INVISIBLE);
+                    chart.setAlpha(1);
+                    mLinearLayout.setAlpha(1);
                 }else{
-                    eqBtn.setVisibility(View.VISIBLE);
-                    eq.setAlpha(0.5f);
+                    //eqBtn.setVisibility(View.VISIBLE);
+                    chart.setAlpha(0.5f);
+                    mLinearLayout.setAlpha(0.5f);
                 }
             }
         });
@@ -279,7 +301,6 @@ public class EqualizerFragment extends Fragment {
         reverbSeek.setBubbleColor(themeColor);
         reverbSeek.setThumbColor(themeColor);
         reverbSeek.setSecondTrackColor(themeColor);
-        spinnerDropDownIcon = view.findViewById(R.id.spinner_dropdown_icon);
         spinnerDropDownIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -332,6 +353,7 @@ public class EqualizerFragment extends Fragment {
             loudnessController.setAlpha(0.5f);
             loudBtn.setVisibility(View.VISIBLE);
         }
+        controllerBtn.setAlpha(0);
         if(switchController3D.isChecked())
         {
             controllerBtn.setVisibility(View.INVISIBLE);
@@ -488,7 +510,6 @@ public class EqualizerFragment extends Fragment {
                 }
             });
 
-        mLinearLayout = view.findViewById(R.id.equalizerContainer);
 
         TextView equalizerHeading = new TextView(getContext());
         equalizerHeading.setText(R.string.eq);
@@ -634,8 +655,27 @@ public class EqualizerFragment extends Fragment {
         Button mEndButton = new Button(getContext());
         mEndButton.setBackgroundColor(themeColor);
         mEndButton.setTextColor(Color.WHITE);
-
-
+        eqBtn.setVisibility(View.INVISIBLE);
+        if(equalizerSwitch.isChecked())
+        {
+            for(int i=0;i<5;++i)
+            {
+                seekBarFinal[i].setEnabled(true);
+            }
+            spinnerDropDownIcon.setEnabled(true);
+            //eqBtn.setVisibility(View.INVISIBLE);
+            presetSpinner.setEnabled(true);
+            chart.setAlpha(1);
+        }else{
+            //eqBtn.setVisibility(View.VISIBLE);
+            spinnerDropDownIcon.setEnabled(false);
+            for(int i=0;i<5;++i)
+            {
+                seekBarFinal[i].setEnabled(false);
+            }
+            presetSpinner.setEnabled(false);
+            chart.setAlpha(0.5f);
+        }
     }
 
     public void equalizeSound() {
