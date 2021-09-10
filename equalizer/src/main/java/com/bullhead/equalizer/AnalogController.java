@@ -102,7 +102,7 @@ public class AnalogController extends View {
 
         circlePaint.setColor(Color.parseColor("#222222"));
         canvas.drawCircle(midx, midy, radius * ((float) 13 / 15), circlePaint);
-        circlePaint.setColor(Color.parseColor("#000000"));
+        circlePaint.setColor(EqualizerFragment.theme);
         canvas.drawCircle(midx, midy, radius * ((float) 11 / 15), circlePaint);
         canvas.drawText(label, midx, midy + (float) (radius * 1.1), textPaint);
         canvas.drawLine(x1, y1, x2, y2, linePaint);

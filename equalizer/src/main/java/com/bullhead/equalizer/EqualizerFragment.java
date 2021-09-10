@@ -4,6 +4,7 @@ package com.bullhead.equalizer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -54,6 +55,7 @@ public class EqualizerFragment extends Fragment {
     public static final String ARG_AUDIO_SESSIOIN_ID = "audio_session_id";
 
     static int       themeColor = Color.parseColor("#B24242");
+    static int theme;
     public Equalizer mEqualizer;
     SwitchCompat equalizerSwitch;
     public BassBoost bassBoost;
@@ -264,11 +266,13 @@ public class EqualizerFragment extends Fragment {
             case Configuration.UI_MODE_NIGHT_YES:
                 rl.setBackgroundColor(getResources().getColor(android.R.color.black));
                 themeColor=Color.parseColor("#FF5722");
+                theme=getResources().getColor(android.R.color.black);
                 break;
 
             case Configuration.UI_MODE_NIGHT_NO:
                 //rl.setBackgroundColor(getResources().getColor(R.color.purple_700));
                 themeColor=Color.parseColor("#E81515");
+                theme=getResources().getColor(android.R.color.white);
                 break;
         }
         reverbSeek.setBubbleColor(themeColor);
@@ -302,6 +306,7 @@ public class EqualizerFragment extends Fragment {
         reverbController.circlePaint2.setColor(themeColor);
         reverbController.linePaint.setColor(themeColor);
         reverbController.textPaint.setColor(themeColor);
+        reverbController.setBackgroundColor(theme);
         reverbController.invalidate();
         loudnessController.circlePaint2.setColor(themeColor);
         loudnessController.linePaint.setColor(themeColor);
