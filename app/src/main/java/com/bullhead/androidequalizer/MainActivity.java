@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         nr=getIntent().getIntExtra("nr",0);
         sharedPreferences=getSharedPreferences("myPref",MODE_PRIVATE);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"black\">" + "Equalizer" + "</font>"));
+        getSupportActionBar().setTitle( "Equalizer");
         if(sharedPreferences.getBoolean("dark",false))
         {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
