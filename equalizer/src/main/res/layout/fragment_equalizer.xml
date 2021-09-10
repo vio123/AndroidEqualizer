@@ -267,7 +267,7 @@
                     android:text="Reverb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/reverbSwitch"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
@@ -314,7 +314,7 @@
                     android:id="@+id/controllerBass"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60ssp" />
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:layout_below="@+id/controllerBass"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/switchBass"
@@ -335,7 +335,7 @@
                     android:id="@+id/controllerLoudness"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60ssp" />
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:layout_below="@+id/controllerLoudness"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/switchLoudness"
@@ -357,7 +357,7 @@
                     android:clickable="false"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60ssp"/>
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:layout_below="@+id/controller3D"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/switchController3D"
@@ -378,7 +378,7 @@
                     android:text="Volume"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/volumeCheck"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"

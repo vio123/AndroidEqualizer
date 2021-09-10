@@ -68,7 +68,7 @@ public class EqualizerFragment extends Fragment {
     RelativeLayout rl;
     Button bassBtn,loudBtn,controllerBtn,eqBtn;
     int y = 0,z=0;
-    Switch reverbSwitch,switchBass,switchLoudness,switchController3D,volumeCheck;
+    SwitchCompat reverbSwitch,switchBass,switchLoudness,switchController3D,volumeCheck;
     ImageView    spinnerDropDownIcon;
     TextView     fragTitle;
     LinearLayout mLinearLayout,eq;
