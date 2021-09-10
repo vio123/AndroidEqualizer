@@ -44,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
-        mediaPlayer = MediaPlayer.create(this, R.raw.lenka);
-        sessionId = mediaPlayer.getAudioSessionId();
-        mediaPlayer.setLooping(true);
+        sessionId=0;
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
