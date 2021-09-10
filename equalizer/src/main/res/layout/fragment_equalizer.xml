@@ -59,7 +59,6 @@
             android:layout_marginLeft="9dp"
             android:layout_marginRight="9dp"
             android:layout_weight="1"
-            android:background="#33000000"
             android:layoutDirection="ltr"
             >
 
@@ -84,8 +83,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/dropdown_icon"
-                app:tint="#FFFFFF" />
+                android:src="@drawable/dropdown_icon"/>
         </RelativeLayout>
 
 

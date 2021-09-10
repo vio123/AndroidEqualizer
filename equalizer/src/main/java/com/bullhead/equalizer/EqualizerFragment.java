@@ -166,6 +166,7 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        presetSpinner = view.findViewById(R.id.equalizer_preset_spinner);
         eqBtn=view.findViewById(R.id.eqBtn);
         controllerBtn=view.findViewById(R.id.controllerBtn);
         bassBtn=view.findViewById(R.id.bassBtn);
@@ -285,7 +286,6 @@ public class EqualizerFragment extends Fragment {
                 presetSpinner.performClick();
             }
         });
-        presetSpinner = view.findViewById(R.id.equalizer_preset_spinner);
 
         equalizerBlocker = view.findViewById(R.id.equalizerBlocker);
 
