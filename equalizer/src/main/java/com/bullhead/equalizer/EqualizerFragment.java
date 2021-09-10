@@ -237,14 +237,32 @@ public class EqualizerFragment extends Fragment {
 
         if(volumeCheck.isChecked())
         {
-            seekVolume.setEnabled(true);
+            for ( int i = 0; i < volumeLL.getChildCount();  i++ ){
+                View view1 = volumeLL.getChildAt(i);
+                view1.setEnabled(true);
+                view1.setAlpha(1);// Or whatever you want to do with the view.
+            }
         }else{
             seekVolume.setEnabled(false);
+            for ( int i = 0; i < volumeLL.getChildCount();  i++ ){
+                View view1 = volumeLL.getChildAt(i);
+                view1.setEnabled(false);
+                view1.setAlpha(0.5f);// Or whatever you want to do with the view.
+            }
         }
         volumeCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                seekVolume.setEnabled(isChecked);
+                for ( int i = 0; i < volumeLL.getChildCount();  i++ ){
+                    View view1 = volumeLL.getChildAt(i);
+                    view1.setEnabled(isChecked);
+                    if(isChecked)
+                    {
+                        view1.setAlpha(1);
+                    }else{
+                        view1.setAlpha(0.5f);
+                    }
+                }
             }
         });
         if(sharedPreferences.getBoolean("reverb",false))
@@ -263,12 +281,14 @@ public class EqualizerFragment extends Fragment {
         {
             for ( int i = 0; i < reverbLL.getChildCount();  i++ ){
                 View view1 = reverbLL.getChildAt(i);
-                view1.setEnabled(true); // Or whatever you want to do with the view.
+                view1.setEnabled(true);
+                view1.setAlpha(1);// Or whatever you want to do with the view.
             }
         }else{
             for ( int i = 0; i < reverbLL.getChildCount();  i++ ){
                 View view1 = reverbLL.getChildAt(i);
-                view1.setEnabled(false); // Or whatever you want to do with the view.
+                view1.setEnabled(false);
+                view1.setAlpha(0.5f);// Or whatever you want to do with the view.
             }
         }
         reverbSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -276,7 +296,13 @@ public class EqualizerFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 for ( int i = 0; i < reverbLL.getChildCount();  i++ ){
                     View view1 = reverbLL.getChildAt(i);
-                    view1.setEnabled(isChecked); // Or whatever you want to do with the view.
+                    view1.setEnabled(isChecked);
+                    if(isChecked)
+                    {
+                        view1.setAlpha(1);
+                    }else{
+                        view1.setAlpha(0.5f);
+                    }
                 }
             }
         });
