@@ -1,4 +1,4 @@
-package com.bullhead.androidequalizer;
+package com.musicequalizer.appten;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.bullhead.androidequalizer.R;
 import com.bullhead.equalizer.Settings;
 
 import java.util.ArrayList;

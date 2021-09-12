@@ -13,5 +13,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="colorControlActivated">@color/orange</item>
+        <item name="colorSwitchThumbNormal">#565656</item>
+        <item name="android:colorForeground">#fff</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">#000</item>
     </style>
 </resources>

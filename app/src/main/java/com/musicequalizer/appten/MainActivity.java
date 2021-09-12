@@ -1,4 +1,4 @@
-package com.bullhead.androidequalizer;
+package com.musicequalizer.appten;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.bullhead.androidequalizer.R;
 import com.bullhead.equalizer.DialogEqualizerFragment;
 import com.bullhead.equalizer.EqualizerFragment;
 import com.bullhead.equalizer.EqualizerModel;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }else{
+            //setTheme(R.style.CustomSwitch);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         mediaPlayer = MediaPlayer.create(this, R.raw.lenka);

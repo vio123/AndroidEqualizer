@@ -1,7 +1,10 @@
-package com.bullhead.androidequalizer;
+package com.musicequalizer.appten;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bullhead.equalizer.Settings;
+import com.bullhead.androidequalizer.R;
 
 import java.util.ArrayList;
 
@@ -62,7 +65,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
             else{
                 subTitle+="hidden";
             }
-        }else{
+        }else if(position!=1){
             holder.check.setVisibility(View.GONE);
         }
         holder.subTitleTxt.setText(subTitle);

@@ -1,4 +1,4 @@
-package com.bullhead.androidequalizer;
+package com.musicequalizer.appten;
 
 public class EqualizerSettings {
     public int[] seekbarpos = new int[5];

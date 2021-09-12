@@ -1,4 +1,4 @@
-package com.bullhead.androidequalizer;
+package com.musicequalizer.appten;
 
 public class SettingsItem {
     private int icon;
