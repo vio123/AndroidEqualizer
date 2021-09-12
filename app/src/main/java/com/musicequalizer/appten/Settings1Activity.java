@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.bullhead.androidequalizer.R;
 import com.bullhead.equalizer.Settings;
 
 import java.util.ArrayList;
