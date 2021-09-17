@@ -1,403 +1,472 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true"
-    android:focusable="true"
-    android:id="@+id/rl">
+    android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/equalizer_action_container"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="@android:color/transparent">
-        <TextView
-            android:id="@+id/equalizer_fragment_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/eq"
-            android:textAllCaps="true"
-            android:textSize="25sp" />
+        android:layout_height="wrap_content"
+        android:id="@+id/rl">
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/equalizer_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            app:theme="@style/CustomSwitch" />
-
-    </RelativeLayout>
-    <Button
-        android:id="@+id/eqBtn"
-        android:alpha="0"
-        android:layout_below="@+id/equalizer_action_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <LinearLayout
-        android:id="@+id/eq"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/equalizer_action_container"
-        android:orientation="vertical">
-
-        <com.db.chart.view.LineChartView
-            android:id="@+id/lineChart"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:background="@drawable/graph_back_2"
-            android:paddingBottom="5dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp" />
 
         <RelativeLayout
+            android:id="@+id/equalizer_action_container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="9dp"
-            android:layout_marginRight="9dp"
-            android:layout_weight="1"
-            android:layoutDirection="ltr"
-            >
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@android:color/transparent">
 
-            <View
-                android:id="@+id/showcase_view_equalizer"
-                android:layout_width="50dp"
+            <TextView
+                android:id="@+id/equalizer_fragment_title"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="20dp" />
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="@string/eq"
+                android:textSize="15sp" />
 
-            <Spinner
-                android:id="@+id/equalizer_preset_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:background="@android:color/transparent" />
-
-            <ImageView
-                android:id="@+id/spinner_dropdown_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/equalizer_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/dropdown_icon"/>
+                android:layout_marginEnd="20dp"
+                app:theme="@style/CustomSwitch" />
+
         </RelativeLayout>
-
-
-        <LinearLayout
-            android:id="@+id/equalizerContainer"
+        <Button
+            android:id="@+id/eqBtn"
+            android:alpha="0"
+            android:layout_below="@+id/equalizer_action_container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6"
-            android:orientation="horizontal"
-            android:padding="3dp">
+            android:layout_height="match_parent"/>
+        <LinearLayout
+            android:id="@+id/eq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/equalizer_action_container"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="vertical">
+            <com.db.chart.view.LineChartView
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:paddingBottom="5dp"
+                />
 
-                <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="8"
-                    android:layoutDirection="ltr"
-                    >
-
-                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-                        android:id="@+id/seekBar1"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="20dp"
-                        android:padding="10dp"
-                        android:thumb="@drawable/custom_equalizer_thumb"
-                        app:seekBarRotation="CW270" />
-                </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:textSize="10dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="8"
-                    android:layoutDirection="ltr"
-                    >
-
-                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-                        android:id="@+id/seekBar2"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="20dp"
-                        android:padding="10dp"
-                        android:thumb="@drawable/custom_equalizer_thumb"
-                        app:seekBarRotation="CW270" />
-                </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+            <RelativeLayout
+                android:id="@+id/presetsmainLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layoutDirection="ltr"
+                >
 
                 <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:textSize="10dp" />
-            </LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="center"
+                    android:background="@android:color/transparent"
+                    android:text="Presets"
+                    android:textSize="15sp" />
+
+                <Spinner
+                    android:id="@+id/equalizer_preset_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="50dp"
+                    android:background="@android:color/transparent" />
+
+                <ImageView
+                    android:id="@+id/spinner_dropdown_icon"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_alignParentEnd="true"
+
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/dropdown_icon" />
+            </RelativeLayout>
+
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="vertical">
+                android:id="@+id/equalizerContainer"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:orientation="horizontal">
 
-                <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="8"
-                    android:layoutDirection="ltr"
-                    >
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@android:color/transparent"
+                    android:orientation="vertical">
 
-                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-                        android:id="@+id/seekBar3"
-                        android:layout_width="0dp"
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginTop="20dp"
-                        android:padding="10dp"
-                        android:thumb="@drawable/custom_equalizer_thumb"
-                        app:seekBarRotation="CW270" />
-                </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+                        android:layout_weight="8"
+                        android:layoutDirection="ltr"
+                        >
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:textSize="10dp" />
-            </LinearLayout>
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/seekBar1"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="20dp"
+                            android:padding="10dp"
+                            android:thumb="@drawable/custom_equalizer_thumb"
+                            app:seekBarRotation="CW270" />
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="8"
-                    android:layoutDirection="ltr"
-                    >
-
-                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-                        android:id="@+id/seekBar4"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginTop="20dp"
-                        android:padding="10dp"
-                        android:thumb="@drawable/custom_equalizer_thumb"
-                        app:seekBarRotation="CW270" />
-                </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+                        android:layout_weight="1"
+                        android:textSize="10dp" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:textSize="10dp" />
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="8"
-                    android:layoutDirection="ltr"
-                    >
-
-                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-                        android:id="@+id/seekBar5"
-                        android:layout_width="0dp"
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginTop="20dp"
-                        android:padding="10dp"
-                        android:thumb="@drawable/custom_equalizer_thumb"
-                        app:seekBarRotation="CW270" />
-                </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+                        android:layout_weight="8"
+                        android:layoutDirection="ltr"
+                        >
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:textSize="10dp" />
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/seekBar2"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="20dp"
+                            android:padding="10dp"
+                            android:thumb="@drawable/custom_equalizer_thumb"
+                            app:seekBarRotation="CW270" />
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="8"
+                        android:layoutDirection="ltr"
+                        >
+
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/seekBar3"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="20dp"
+                            android:padding="10dp"
+                            android:thumb="@drawable/custom_equalizer_thumb"
+                            app:seekBarRotation="CW270" />
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="8"
+                        android:layoutDirection="ltr"
+                        >
+
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/seekBar4"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="20dp"
+                            android:padding="10dp"
+                            android:thumb="@drawable/custom_equalizer_thumb"
+                            app:seekBarRotation="CW270" />
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="8"
+                        android:layoutDirection="ltr"
+                        >
+
+                        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                            android:id="@+id/seekBar5"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="20dp"
+                            android:padding="10dp"
+                            android:thumb="@drawable/custom_equalizer_thumb"
+                            app:seekBarRotation="CW270" />
+                    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textSize="10dp" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
+
         <LinearLayout
-            android:id="@+id/reverbLL"
-            android:visibility="gone"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/eq"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/reverbLL"
+                android:visibility="visible"
+                android:orientation="vertical"
+                android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Reverb" />
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/reverbSwitch"
+                        android:layout_marginRight="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+                <com.xw.repo.BubbleSeekBar
+                    android:id="@+id/reverbSeek"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:bsb_auto_adjust_section_mark="true"
+                    app:bsb_section_count="5"
+                    app:bsb_min="0"
+                    app:bsb_max="100"
+                    app:bsb_section_text_position="below_section_mark"
+                    app:bsb_show_section_mark="true"
+                    app:bsb_show_section_text="true"
+
+                    app:bsb_thumb_text_size="18sp"
+                    app:bsb_touch_to_seek="true"/>
                 <TextView
-                    android:layout_marginLeft="20dp"
-                    android:text="Reverb"
+                    android:id="@+id/roomValue"
+                    android:text="None"
+                    android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/reverbSwitch"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </RelativeLayout>
-            <com.xw.repo.BubbleSeekBar
-                android:id="@+id/reverbSeek"
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:bsb_auto_adjust_section_mark="true"
-                app:bsb_section_count="6"
-                app:bsb_min="0"
-                app:bsb_max="120"
-                app:bsb_section_text_position="below_section_mark"
-                app:bsb_show_section_mark="true"
-                app:bsb_show_section_text="true"
-                app:bsb_show_thumb_text="true"
-                app:bsb_thumb_text_size="18sp"
-                app:bsb_touch_to_seek="true"/>
-            <TextView
-                android:text="Large room"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="150dp"
+                android:layout_marginTop="30dp"
+                android:background="@android:color/transparent"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <Button
+                        android:id="@+id/bassBtn"
+                        android:alpha="0"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_60ssp"/>
+
+                    <com.bullhead.equalizer.AnalogController
+                        android:id="@+id/controllerBass"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_60ssp" />
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:layout_below="@+id/controllerBass"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/switchBass"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/switchBass"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="Bass Boost"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <Button
+                        android:id="@+id/loudBtn"
+                        android:alpha="0"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_60ssp"/>
+
+                    <com.bullhead.equalizer.AnalogController
+                        android:id="@+id/controllerLoudness"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_60ssp" />
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:layout_below="@+id/controllerLoudness"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/switchLoudness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/switchLoudness"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="Loudness"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <Button
+                        android:id="@+id/controllerBtn"
+                        android:alpha="0"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_60ssp"/>
+
+                    <com.bullhead.equalizer.AnalogController
+                        android:id="@+id/controller3D"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_60ssp"
+                        android:clickable="false" />
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:layout_below="@+id/controller3D"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/switchController3D"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/switchController3D"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="Virtualizer"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/volumeLL"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Volume" />
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/volumeCheck"
+                        android:layout_marginRight="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+                <SeekBar
+                    android:id="@+id/seekVolume"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
         </LinearLayout>
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/equalizerBlocker"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/equalizer_action_container"
+            android:alpha="0.7"
             android:background="@android:color/transparent"
-            android:orientation="horizontal">
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <Button
-                    android:id="@+id/bassBtn"
-                    android:alpha="0"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60ssp"/>
-                <com.bullhead.equalizer.AnalogController
-                    android:id="@+id/controllerBass"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60ssp" />
-                <androidx.appcompat.widget.SwitchCompat
-                    android:layout_below="@+id/controllerBass"
-                    android:layout_centerHorizontal="true"
-                    android:id="@+id/switchBass"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <Button
-                    android:id="@+id/loudBtn"
-                    android:alpha="0"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60ssp"/>
-                <com.bullhead.equalizer.AnalogController
-                    android:id="@+id/controllerLoudness"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60ssp" />
-                <androidx.appcompat.widget.SwitchCompat
-                    android:layout_below="@+id/controllerLoudness"
-                    android:layout_centerHorizontal="true"
-                    android:id="@+id/switchLoudness"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <Button
-                    android:id="@+id/controllerBtn"
-                    android:alpha="0"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60ssp"/>
+            android:clickable="true"
+            android:visibility="invisible" />
 
-                <com.bullhead.equalizer.AnalogController
-                    android:id="@+id/controller3D"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60ssp"
-                    android:clickable="false" />
-                <androidx.appcompat.widget.SwitchCompat
-                    android:layout_below="@+id/controller3D"
-                    android:layout_centerHorizontal="true"
-                    android:id="@+id/switchController3D"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </RelativeLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/volumeLL"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_marginLeft="20dp"
-                    android:text="Volume"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/volumeCheck"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </RelativeLayout>
-            <SeekBar
-                android:id="@+id/seekVolume"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-    </LinearLayout>
-    <FrameLayout
-        android:id="@+id/equalizerBlocker"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/equalizer_action_container"
-        android:alpha="0.7"
-        android:background="@android:color/transparent"
-        android:clickable="true"
-        android:visibility="invisible" />
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

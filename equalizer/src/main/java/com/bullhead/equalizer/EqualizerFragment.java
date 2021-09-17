@@ -17,6 +17,7 @@ import android.media.audiofx.PresetReverb;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -57,7 +58,7 @@ public class EqualizerFragment extends Fragment {
     static int       themeColor = Color.parseColor("#B24242");
     static int theme;
     public Equalizer mEqualizer;
-    public SwitchCompat equalizerSwitch;
+    SwitchCompat equalizerSwitch;
     public BassBoost bassBoost;
     LineChartView chart;
     public PresetReverb presetReverb;
@@ -65,12 +66,12 @@ public class EqualizerFragment extends Fragment {
     public LinearLayout reverbLL,volumeLL;
     SeekBar seekVolume;
     BubbleSeekBar reverbSeek;
-    RelativeLayout rl;
+    RelativeLayout rl, mainLayout, presetsMainLayout;
     Button bassBtn,loudBtn,controllerBtn,eqBtn;
     int y = 0,z=0;
     SwitchCompat reverbSwitch,switchBass,switchLoudness,switchController3D,volumeCheck;
     ImageView    spinnerDropDownIcon;
-    TextView     fragTitle;
+    TextView     fragTitle, roomValueFromBubble;
     LinearLayout mLinearLayout,eq;
 
     SeekBar[] seekBarFinal = new SeekBar[5];
@@ -170,6 +171,7 @@ public class EqualizerFragment extends Fragment {
         presetSpinner = view.findViewById(R.id.equalizer_preset_spinner);
         eqBtn=view.findViewById(R.id.eqBtn);
         controllerBtn=view.findViewById(R.id.controllerBtn);
+        roomValueFromBubble = view.findViewById(R.id.roomValue);
         bassBtn=view.findViewById(R.id.bassBtn);
         loudBtn=view.findViewById(R.id.loudBtn);
         spinnerDropDownIcon = view.findViewById(R.id.spinner_dropdown_icon);
@@ -188,6 +190,8 @@ public class EqualizerFragment extends Fragment {
         equalizerSwitch = view.findViewById(R.id.equalizer_switch);
         equalizerSwitch.setChecked(Settings.isEqualizerEnabled);
         chart   = view.findViewById(R.id.lineChart);
+        mainLayout = view.findViewById(R.id.equalizer_action_container);
+        presetsMainLayout = view.findViewById(R.id.presetsmainLayout);
         equalizerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -197,7 +201,7 @@ public class EqualizerFragment extends Fragment {
                 presetReverb.setEnabled(isChecked);
                 presetSpinner.setEnabled(isChecked);
                 spinnerDropDownIcon.setEnabled(isChecked);
-                if(!switchBass.isChecked())
+              /*  if(!switchBass.isChecked())
                 {
                     switchBass.setEnabled(isChecked);
                 }
@@ -216,7 +220,7 @@ public class EqualizerFragment extends Fragment {
                 if(!volumeCheck.isChecked())
                 {
                     volumeCheck.setEnabled(isChecked);
-                }
+                }*/
                 Settings.isEqualizerEnabled = isChecked;
                 for(int i=0;i<5;++i)
                 {
@@ -313,12 +317,19 @@ public class EqualizerFragment extends Fragment {
         switch (nightModeFlags)
         {
             case Configuration.UI_MODE_NIGHT_YES:
-                rl.setBackgroundColor(getResources().getColor(android.R.color.black));
-                themeColor=Color.parseColor("#FF5722");
+                //   eq.setBackgroundResource(R.drawable.bgcardview);
+                //  chart.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                //  presetsMainLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                //  mLinearLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                //  fragTitle.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                //  rl.setBackgroundColor(getResources().getColor(android.R.color.black));
+                themeColor=Color.parseColor("#1ECD5D");
                 theme=getResources().getColor(android.R.color.black);
                 break;
 
             case Configuration.UI_MODE_NIGHT_NO:
+                //   eq.setBackgroundResource(R.drawable.bgcardview_white);
+                //   fragTitle.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                 //rl.setBackgroundColor(getResources().getColor(R.color.purple_700));
                 themeColor=Color.parseColor("#E81515");
                 theme=getResources().getColor(android.R.color.white);
@@ -326,7 +337,95 @@ public class EqualizerFragment extends Fragment {
         }
         reverbSeek.setBubbleColor(themeColor);
         reverbSeek.setThumbColor(themeColor);
+
         reverbSeek.setSecondTrackColor(themeColor);
+        reverbSeek.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListener() {
+            @Override
+            public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+                if (progress == 0)
+                {
+                    roomValueFromBubble.setText("None");
+                }
+                else if (progress == 20)
+                {
+                    roomValueFromBubble.setText("Small room");
+                }
+                else if (progress == 40)
+                {
+                    roomValueFromBubble.setText("Medium room");
+                }
+                else if (progress == 60)
+                {
+                    roomValueFromBubble.setText("Large room");
+                }
+                else if (progress == 80)
+                {
+                    roomValueFromBubble.setText("Medium hall");
+                }
+                else if (progress == 100)
+                {
+                    roomValueFromBubble.setText("Large hall");
+                }
+            }
+
+            @Override
+            public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
+                if (progress == 0)
+                {
+                    roomValueFromBubble.setText("None");
+                }
+                else if (progress == 20)
+                {
+                    roomValueFromBubble.setText("Small room");
+                }
+                else if (progress == 40)
+                {
+                    roomValueFromBubble.setText("Medium room");
+                }
+                else if (progress == 60)
+                {
+                    roomValueFromBubble.setText("Large room");
+                }
+                else if (progress == 80)
+                {
+                    roomValueFromBubble.setText("Medium hall");
+                }
+                else if (progress == 100)
+                {
+                    roomValueFromBubble.setText("Large hall");
+                }
+
+            }
+
+            @Override
+            public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+
+                if (progress == 0)
+                {
+                    roomValueFromBubble.setText("None");
+                }
+                else if (progress == 20)
+                {
+                    roomValueFromBubble.setText("Small room");
+                }
+                else if (progress == 40)
+                {
+                    roomValueFromBubble.setText("Medium room");
+                }
+                else if (progress == 60)
+                {
+                    roomValueFromBubble.setText("Large room");
+                }
+                else if (progress == 80)
+                {
+                    roomValueFromBubble.setText("Medium hall");
+                }
+                else if (progress == 100)
+                {
+                    roomValueFromBubble.setText("Large hall");
+                }
+            }
+        });
         spinnerDropDownIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -340,12 +439,70 @@ public class EqualizerFragment extends Fragment {
         paint   = new Paint();
         dataset = new LineSet();
 
+
         bassController   = view.findViewById(R.id.controllerBass);
+        bassController.setOnTouchListener(new SeekBar.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                int action = event.getAction();
+                switch (action)
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
         reverbController = view.findViewById(R.id.controller3D);
+        reverbController.setOnTouchListener(new SeekBar.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                int action = event.getAction();
+                switch (action)
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
         loudnessController=view.findViewById(R.id.controllerLoudness);
-        bassController.setLabel("Bass Boost");
-        reverbController.setLabel("Virtualizer");
-        loudnessController.setLabel("Loudness");
+        loudnessController.setOnTouchListener(new SeekBar.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                int action = event.getAction();
+                switch (action)
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
+        bassController.setLabel("");
+        reverbController.setLabel("");
+        loudnessController.setLabel("");
         bassController.circlePaint2.setColor(themeColor);
         bassController.linePaint.setColor(themeColor);
         bassController.textPaint.setColor(themeColor);
@@ -353,7 +510,8 @@ public class EqualizerFragment extends Fragment {
         reverbController.circlePaint2.setColor(themeColor);
         reverbController.linePaint.setColor(themeColor);
         reverbController.textPaint.setColor(themeColor);
-        reverbController.setBackgroundColor(theme);
+        reverbController.circlePaint.setColor(Color.RED);
+        //reverbController.setBackgroundColor(theme);
         reverbController.invalidate();
         loudnessController.circlePaint2.setColor(themeColor);
         loudnessController.linePaint.setColor(themeColor);
@@ -367,7 +525,7 @@ public class EqualizerFragment extends Fragment {
         }else{
             bassBtn.setVisibility(View.VISIBLE);
             bassBoost.setEnabled(false);
-            bassController.setAlpha(0.5f);
+            bassController.setAlpha(0.6f);
         }
         if(switchLoudness.isChecked())
         {
@@ -376,7 +534,7 @@ public class EqualizerFragment extends Fragment {
             loudnessController.setAlpha(1);
         }else{
             loudnessEnhancer.setEnabled(false);
-            loudnessController.setAlpha(0.5f);
+            loudnessController.setAlpha(0.6f);
             loudBtn.setVisibility(View.VISIBLE);
         }
         controllerBtn.setAlpha(0);
@@ -387,7 +545,7 @@ public class EqualizerFragment extends Fragment {
             reverbController.setAlpha(1);
         }else{
             presetReverb.setEnabled(false);
-            reverbController.setAlpha(0.5f);
+            reverbController.setAlpha(0.6f);
             controllerBtn.setVisibility(View.VISIBLE);
         }
         switchBass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -399,7 +557,7 @@ public class EqualizerFragment extends Fragment {
                     bassBtn.setVisibility(View.INVISIBLE);
                     bassController.setAlpha(1);
                 }else{
-                    bassController.setAlpha(0.5f);
+                    bassController.setAlpha(0.6f);
                     bassBtn.setVisibility(View.VISIBLE);
                 }
             }
@@ -413,7 +571,7 @@ public class EqualizerFragment extends Fragment {
                     loudnessController.setAlpha(1);
                     loudBtn.setVisibility(View.INVISIBLE);
                 }else{
-                    loudnessController.setAlpha(0.5f);
+                    loudnessController.setAlpha(0.6f);
                     loudBtn.setVisibility(View.VISIBLE);
                 }
             }
@@ -427,7 +585,7 @@ public class EqualizerFragment extends Fragment {
                     reverbController.setAlpha(1);
                     controllerBtn.setVisibility(View.INVISIBLE);
                 }else{
-                    reverbController.setAlpha(0.5f);
+                    reverbController.setAlpha(0.6f);
                     controllerBtn.setVisibility(View.VISIBLE);
                 }
             }
@@ -501,40 +659,41 @@ public class EqualizerFragment extends Fragment {
         bassController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
             @Override
             public void onProgressChanged(int progress) {
-                    Settings.bassStrength = (short) (((float) 1000 / 19) * (progress));
-                    try {
-                        bassBoost.setStrength(Settings.bassStrength);
-                        Settings.equalizerModel.setBassStrength(Settings.bassStrength);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                Settings.bassStrength = (short) (((float) 1000 / 19) * (progress));
+                try {
+
+                    bassBoost.setStrength(Settings.bassStrength);
+                    Settings.equalizerModel.setBassStrength(Settings.bassStrength);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            }
         });
         loudnessController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
             @Override
             public void onProgressChanged(int progress) {
-                    Settings.loudnessStrength = (short) ((progress * 6) / 19);
-                    Settings.equalizerModel.setLoudnessStrength(Settings.loudnessStrength);
-                    try {
-                        loudnessEnhancer.setTargetGain(Settings.loudnessStrength);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                Settings.loudnessStrength = (short) ((progress * 6) / 19);
+                Settings.equalizerModel.setLoudnessStrength(Settings.loudnessStrength);
+                try {
+                    loudnessEnhancer.setTargetGain(Settings.loudnessStrength);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-            reverbController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
-                @Override
-                public void onProgressChanged(int progress) {
-                        Settings.reverbPreset = (short) ((progress * 6) / 19);
-                        Settings.equalizerModel.setReverbPreset(Settings.reverbPreset);
-                        try {
-                            presetReverb.setPreset(Settings.reverbPreset);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        y = progress;
+        reverbController.setOnProgressChangedListener(new AnalogController.onProgressChangedListener() {
+            @Override
+            public void onProgressChanged(int progress) {
+                Settings.reverbPreset = (short) ((progress * 6) / 19);
+                Settings.equalizerModel.setReverbPreset(Settings.reverbPreset);
+                try {
+                    presetReverb.setPreset(Settings.reverbPreset);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
+                y = progress;
+            }
+        });
 
 
         TextView equalizerHeading = new TextView(getContext());
