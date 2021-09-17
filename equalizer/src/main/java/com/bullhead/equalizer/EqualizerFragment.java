@@ -57,7 +57,7 @@ public class EqualizerFragment extends Fragment {
     static int       themeColor = Color.parseColor("#B24242");
     static int theme;
     public Equalizer mEqualizer;
-    SwitchCompat equalizerSwitch;
+    public SwitchCompat equalizerSwitch;
     public BassBoost bassBoost;
     LineChartView chart;
     public PresetReverb presetReverb;

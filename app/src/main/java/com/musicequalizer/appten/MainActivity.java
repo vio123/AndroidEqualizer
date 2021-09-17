@@ -1,14 +1,18 @@
 package com.musicequalizer.appten;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,14 +31,17 @@ import com.google.gson.Gson;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
-    private MediaPlayer mediaPlayer;
-    int sessionId;
+public class MainActivity extends AppCompatActivity{
+    static int sessionId;
+    AudioSessionReceiver receiver;
     private SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        IntentFilter intentFilter=new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_DEFAULT);
+        this.registerReceiver(receiver,intentFilter);
         nr=getIntent().getIntExtra("nr",0);
         sharedPreferences=getSharedPreferences("myPref",MODE_PRIVATE);
         getSupportActionBar().setTitle( "Equalizer");
@@ -42,13 +49,11 @@ public class MainActivity extends AppCompatActivity {
         {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }else{
-            //setTheme(R.style.CustomSwitch);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
-        mediaPlayer = MediaPlayer.create(this, R.raw.lenka);
-        sessionId = mediaPlayer.getAudioSessionId();
-        mediaPlayer.setLooping(true);
-        mediaPlayer.pause();
+        AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+        if(sessionId==0)
+         sessionId=audioManager.generateAudioSessionId();
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
@@ -63,24 +68,23 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onPause() {
-        try {
-            mediaPlayer.pause();
-        } catch (Exception ex) {
-            //ignore
-        }
         super.onPause();
     }
-
+    public static void eq(Context context, int id)
+    {
+       sessionId=id;
+    }
     @Override
     protected void onResume() {
         super.onResume();
-        mediaPlayer = MediaPlayer.create(this, R.raw.lenka);
-        sessionId = mediaPlayer.getAudioSessionId();
-        mediaPlayer.setLooping(true);
+        AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+        if(sessionId==0)
+            sessionId = audioManager.generateAudioSessionId();
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
                 .build();
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.eqFrame, equalizerFragment).commit();
         if(nr==1)
