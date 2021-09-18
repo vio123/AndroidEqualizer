@@ -79,7 +79,7 @@ public class EqualizerFragment extends Fragment {
 
     SeekBar[] seekBarFinal = new SeekBar[5];
 
-    AnalogController bassController, reverbController,loudnessController;
+    AnalogController  bassController,reverbController,loudnessController;
 
     Spinner presetSpinner;
 
@@ -179,6 +179,8 @@ public class EqualizerFragment extends Fragment {
         loudBtn=view.findViewById(R.id.loudBtn);
         spinnerDropDownIcon = view.findViewById(R.id.spinner_dropdown_icon);
         eq=view.findViewById(R.id.eq);
+        reverbController = view.findViewById(R.id.controller3D);
+        loudnessController=view.findViewById(R.id.controllerLoudness);
         reverbSeek=view.findViewById(R.id.reverbSeek);
         seekVolume=view.findViewById(R.id.seekVolume);
         volumeCheck=view.findViewById(R.id.volumeCheck);
@@ -186,11 +188,13 @@ public class EqualizerFragment extends Fragment {
         switchBass=view.findViewById(R.id.switchBass);
         switchLoudness=view.findViewById(R.id.switchLoudness);
         reverbSwitch=view.findViewById(R.id.reverbSwitch);
+        bassController   = view.findViewById(R.id.controllerBass);
         sharedPreferences= ctx.getSharedPreferences("myPref",Context.MODE_PRIVATE);
         reverbLL=view.findViewById(R.id.reverbLL);
         volumeLL=view.findViewById(R.id.volumeLL);
         fragTitle = view.findViewById(R.id.equalizer_fragment_title);
         equalizerSwitch = view.findViewById(R.id.equalizer_switch);
+        Settings.isEqualizerEnabled=sharedPreferences.getBoolean("switch",true);
         equalizerSwitch.setChecked(Settings.isEqualizerEnabled);
         chart   = view.findViewById(R.id.lineChart);
         mainLayout = view.findViewById(R.id.equalizer_action_container);
@@ -239,6 +243,19 @@ public class EqualizerFragment extends Fragment {
                     chart.setAlpha(0.5f);
                     mLinearLayout.setAlpha(0.5f);
                 }
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+                editor.putBoolean("switch",isChecked).apply();
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                PackageManager packageManager = ctx.getPackageManager();
+                Intent intent = packageManager.getLaunchIntentForPackage(ctx.getPackageName());
+                ComponentName componentName = intent.getComponent();
+                Intent mainIntent = Intent.makeRestartActivityTask(componentName);
+                ctx.startActivity(mainIntent);
+                Runtime.getRuntime().exit(0);
             }
         });
 
@@ -443,7 +460,6 @@ public class EqualizerFragment extends Fragment {
         dataset = new LineSet();
 
 
-        bassController   = view.findViewById(R.id.controllerBass);
         bassController.setOnTouchListener(new SeekBar.OnTouchListener()
         {
             @Override
@@ -483,7 +499,6 @@ public class EqualizerFragment extends Fragment {
                 return true;
             }
         });
-        loudnessController=view.findViewById(R.id.controllerLoudness);
         loudnessController.setOnTouchListener(new SeekBar.OnTouchListener()
         {
             @Override
@@ -863,6 +878,38 @@ public class EqualizerFragment extends Fragment {
             }
             presetSpinner.setEnabled(false);
             chart.setAlpha(0.5f);
+        }
+        if(equalizerSwitch.isChecked())
+        {
+            mEqualizer.setEnabled(true);
+            loudnessController.setEnabled(true);
+            bassBoost.setEnabled(true);
+            presetReverb.setEnabled(true);
+            presetSpinner.setEnabled(true);
+            spinnerDropDownIcon.setEnabled(true);
+            Settings.isEqualizerEnabled = true;
+            for(int i=0;i<5;++i)
+            {
+                seekBarFinal[i].setEnabled(true);
+            }
+            //eqBtn.setVisibility(View.INVISIBLE);
+            chart.setAlpha(1);
+            mLinearLayout.setAlpha(1);
+        }else{
+            mEqualizer.setEnabled(false);
+            loudnessController.setEnabled(false);
+            bassBoost.setEnabled(false);
+            presetReverb.setEnabled(false);
+            presetSpinner.setEnabled(false);
+            spinnerDropDownIcon.setEnabled(false);
+            Settings.isEqualizerEnabled = false;
+            for(int i=0;i<5;++i)
+            {
+                seekBarFinal[i].setEnabled(false);
+            }
+            //eqBtn.setVisibility(View.INVISIBLE);
+            chart.setAlpha(0.5f);
+            mLinearLayout.setAlpha(0.5f);
         }
     }
 

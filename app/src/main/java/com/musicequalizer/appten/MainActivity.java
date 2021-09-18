@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity  {
                 .commit();
         Intent serviceIntent = new Intent(getApplicationContext(), ExampleService.class);
         serviceIntent.putExtra("inputExtra", "da");
-        if (Settings.isEqualizerEnabled) {
+        if (sharedPreferences.getBoolean("switch",true)) {
             startService(serviceIntent);
         } else {
             stopService(serviceIntent);
@@ -70,9 +70,6 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Intent serviceIntent = new Intent(getApplicationContext(), ExampleService.class);
-        serviceIntent.putExtra("inputExtra", "da");
-        stopService(serviceIntent);
     }
 
     @Override
@@ -102,13 +99,6 @@ public class MainActivity extends AppCompatActivity  {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.eqFrame, equalizerFragment).commit();
-        Intent serviceIntent = new Intent(getApplicationContext(), ExampleService.class);
-        serviceIntent.putExtra("inputExtra", "da");
-        if (Settings.isEqualizerEnabled) {
-            startService(serviceIntent);
-        } else {
-            stopService(serviceIntent);
-        }
         if (nr == 1) {
             loadEqualizerSettings();
         }
