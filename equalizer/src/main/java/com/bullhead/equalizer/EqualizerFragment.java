@@ -3,6 +3,7 @@ package com.bullhead.equalizer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -58,7 +59,7 @@ public class EqualizerFragment extends Fragment {
     static int       themeColor = Color.parseColor("#B24242");
     static int theme;
     public Equalizer mEqualizer;
-    SwitchCompat equalizerSwitch;
+    public SwitchCompat equalizerSwitch;
     public BassBoost bassBoost;
     LineChartView chart;
     public PresetReverb presetReverb;

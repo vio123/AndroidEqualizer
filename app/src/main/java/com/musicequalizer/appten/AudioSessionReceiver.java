@@ -1,5 +1,9 @@
 package com.musicequalizer.appten;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +12,7 @@ import android.media.audiofx.Equalizer;
 import android.util.Log;
 
 import com.bullhead.equalizer.EqualizerFragment;
+import com.bullhead.equalizer.Settings;
 
 public class AudioSessionReceiver extends BroadcastReceiver {
     @Override

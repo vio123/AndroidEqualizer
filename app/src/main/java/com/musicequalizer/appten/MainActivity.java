@@ -4,41 +4,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.Html;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-
-import com.bullhead.equalizer.DialogEqualizerFragment;
 import com.bullhead.equalizer.EqualizerFragment;
 import com.bullhead.equalizer.EqualizerModel;
 import com.bullhead.equalizer.Settings;
 import com.google.gson.Gson;
 
-import java.util.Objects;
-
 public class MainActivity extends AppCompatActivity{
     static int sessionId;
     AudioSessionReceiver receiver;
     private SharedPreferences sharedPreferences;
+    RelativeLayout rl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        rl=findViewById(R.id.rl);
         IntentFilter intentFilter=new IntentFilter();
         intentFilter.addAction(Intent.ACTION_DEFAULT);
         this.registerReceiver(receiver,intentFilter);
@@ -61,6 +52,14 @@ public class MainActivity extends AppCompatActivity{
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.eqFrame, equalizerFragment)
                 .commit();
+        Intent serviceIntent=new Intent(getApplicationContext(), ExampleService.class);
+        serviceIntent.putExtra("inputExtra","da");
+        if(Settings.isEqualizerEnabled)
+        {
+            startService(serviceIntent);
+        }else{
+            stopService(serviceIntent);
+        }
     }
     @Override
     protected void onStop() {

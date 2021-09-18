@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.musicequalizer.appten" >
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
+        android:name=".App"
         android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,6 +29,9 @@
                 <action android:name="android.media.action.OPEN_AUDIO_EFFECT_CONTROL_SESSION"/>
             </intent-filter>
         </receiver>
+        <service android:name=".ExampleService">
+
+        </service>
     </application>
 
 </manifest>
