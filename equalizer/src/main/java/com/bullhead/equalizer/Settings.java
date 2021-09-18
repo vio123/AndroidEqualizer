@@ -1,5 +1,7 @@
 package com.bullhead.equalizer;
 
+import androidx.appcompat.widget.SwitchCompat;
+
 public class Settings {
     public static boolean        isEqualizerEnabled  = true;
     public static boolean        isEqualizerReloaded = true;

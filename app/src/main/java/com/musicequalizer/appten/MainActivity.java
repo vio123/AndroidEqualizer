@@ -6,13 +6,20 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import com.bullhead.equalizer.EqualizerFragment;
@@ -20,31 +27,30 @@ import com.bullhead.equalizer.EqualizerModel;
 import com.bullhead.equalizer.Settings;
 import com.google.gson.Gson;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity  {
     static int sessionId;
     AudioSessionReceiver receiver;
     private SharedPreferences sharedPreferences;
-    RelativeLayout rl;
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        rl=findViewById(R.id.rl);
-        IntentFilter intentFilter=new IntentFilter();
+        IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_DEFAULT);
-        this.registerReceiver(receiver,intentFilter);
-        nr=getIntent().getIntExtra("nr",0);
-        sharedPreferences=getSharedPreferences("myPref",MODE_PRIVATE);
-        getSupportActionBar().setTitle( "Equalizer");
-        if(sharedPreferences.getBoolean("dark",false))
-        {
+        this.registerReceiver(receiver, intentFilter);
+        nr = getIntent().getIntExtra("nr", 0);
+        sharedPreferences = getSharedPreferences("myPref", MODE_PRIVATE);
+        getSupportActionBar().setTitle("Equalizer");
+        if (sharedPreferences.getBoolean("dark", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }else{
+        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-        if(sessionId==0)
-         sessionId=audioManager.generateAudioSessionId();
+        if (sessionId == 0)
+            sessionId = audioManager.generateAudioSessionId();
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
@@ -52,32 +58,42 @@ public class MainActivity extends AppCompatActivity{
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.eqFrame, equalizerFragment)
                 .commit();
-        Intent serviceIntent=new Intent(getApplicationContext(), ExampleService.class);
-        serviceIntent.putExtra("inputExtra","da");
-        if(Settings.isEqualizerEnabled)
-        {
+        Intent serviceIntent = new Intent(getApplicationContext(), ExampleService.class);
+        serviceIntent.putExtra("inputExtra", "da");
+        if (Settings.isEqualizerEnabled) {
             startService(serviceIntent);
-        }else{
+        } else {
             stopService(serviceIntent);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent serviceIntent = new Intent(getApplicationContext(), ExampleService.class);
+        serviceIntent.putExtra("inputExtra", "da");
+        stopService(serviceIntent);
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
     }
-    public static void eq(Context context, int id)
-    {
-       sessionId=id;
+
+    public static void eq(Context context, int id) {
+        sessionId = id;
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-        if(sessionId==0)
+        if (sessionId == 0)
             sessionId = audioManager.generateAudioSessionId();
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
@@ -86,8 +102,14 @@ public class MainActivity extends AppCompatActivity{
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.eqFrame, equalizerFragment).commit();
-        if(nr==1)
-        {
+        Intent serviceIntent = new Intent(getApplicationContext(), ExampleService.class);
+        serviceIntent.putExtra("inputExtra", "da");
+        if (Settings.isEqualizerEnabled) {
+            startService(serviceIntent);
+        } else {
+            stopService(serviceIntent);
+        }
+        if (nr == 1) {
             loadEqualizerSettings();
         }
     }
@@ -98,37 +120,37 @@ public class MainActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
+
     int nr;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.loadPreset) {
-            nr=1;
+            nr = 1;
             loadEqualizerSettings();
             return true;
-        }else if(item.getItemId() == R.id.savePreset)
-        {
+        } else if (item.getItemId() == R.id.savePreset) {
             saveEqualizerSettings();
             return true;
-        }else if(item.getItemId() == R.id.settings)
-        {
-            Intent i=new Intent(getApplicationContext(),Settings1Activity.class);
-            i.putExtra("nr",nr);
+        } else if (item.getItemId() == R.id.settings) {
+            Intent i = new Intent(getApplicationContext(), Settings1Activity.class);
+            i.putExtra("nr", nr);
             startActivity(i);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveEqualizerSettings(){
-        if (Settings.equalizerModel != null){
+    private void saveEqualizerSettings() {
+        if (Settings.equalizerModel != null) {
             EqualizerSettings settings = new EqualizerSettings();
             settings.bassStrength = Settings.equalizerModel.getBassStrength();
             settings.presetPos = Settings.equalizerModel.getPresetPos();
             settings.reverbPreset = Settings.equalizerModel.getReverbPreset();
             settings.seekbarpos = Settings.equalizerModel.getSeekbarpos();
-            settings.loudnessStrength=Settings.equalizerModel.getLoudnessStrength();
-            settings.isReverbChecked=sharedPreferences.getBoolean("reverb",false);
-            settings.isVolumeChecked=sharedPreferences.getBoolean("volume",false);
+            settings.loudnessStrength = Settings.equalizerModel.getLoudnessStrength();
+            settings.isReverbChecked = sharedPreferences.getBoolean("reverb", false);
+            settings.isVolumeChecked = sharedPreferences.getBoolean("volume", false);
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
             Gson gson = new Gson();
@@ -138,7 +160,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void loadEqualizerSettings(){
+    private void loadEqualizerSettings() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         Gson gson = new Gson();
@@ -148,27 +170,25 @@ public class MainActivity extends AppCompatActivity{
         model.setPresetPos(settings.presetPos);
         model.setReverbPreset(settings.reverbPreset);
         model.setSeekbarpos(settings.seekbarpos);
-         model.setLoudnessStrength(settings.loudnessStrength);
+        model.setLoudnessStrength(settings.loudnessStrength);
         Settings.isEqualizerEnabled = true;
         Settings.isEqualizerReloaded = true;
-        if(!settings.isReverbChecked)
-        {
-            Settings.reverbChecked=sharedPreferences.getBoolean("reverb",false);
-        }else{
-            Settings.reverbChecked=settings.isReverbChecked;
+        if (!settings.isReverbChecked) {
+            Settings.reverbChecked = sharedPreferences.getBoolean("reverb", false);
+        } else {
+            Settings.reverbChecked = settings.isReverbChecked;
         }
-        if(!settings.isVolumeChecked)
-        {
-            Settings.volumeChecked=sharedPreferences.getBoolean("volume",false);
-        }else{
-            Settings.volumeChecked=settings.isVolumeChecked;
+        if (!settings.isVolumeChecked) {
+            Settings.volumeChecked = sharedPreferences.getBoolean("volume", false);
+        } else {
+            Settings.volumeChecked = settings.isVolumeChecked;
         }
         Settings.bassStrength = settings.bassStrength;
         Settings.presetPos = settings.presetPos;
         Settings.reverbPreset = settings.reverbPreset;
         Settings.seekbarpos = settings.seekbarpos;
         Settings.equalizerModel = model;
-        Settings.loudnessStrength=settings.loudnessStrength;
+        Settings.loudnessStrength = settings.loudnessStrength;
         EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
