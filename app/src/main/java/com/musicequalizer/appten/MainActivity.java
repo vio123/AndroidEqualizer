@@ -58,13 +58,21 @@ public class MainActivity extends AppCompatActivity  {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.eqFrame, equalizerFragment)
                 .commit();
-        Intent serviceIntent = new Intent(getApplicationContext(), ExampleService.class);
-        serviceIntent.putExtra("inputExtra", "da");
-        if (sharedPreferences.getBoolean("switch",true)) {
-            startService(serviceIntent);
-        } else {
-            stopService(serviceIntent);
-        }
+        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if(key.equals("switch"))
+                {
+                    Intent serviceIntent = new Intent(getApplicationContext(), ExampleService.class);
+                    if (sharedPreferences.getBoolean("switch",false)) {
+                        startService(serviceIntent);
+                    } else {
+                        stopService(serviceIntent);
+                    }
+                    //Toast.makeText(getApplicationContext(),String.valueOf(sharedPreferences.getBoolean("switch",true)),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override

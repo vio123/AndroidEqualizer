@@ -194,7 +194,7 @@ public class EqualizerFragment extends Fragment {
         volumeLL=view.findViewById(R.id.volumeLL);
         fragTitle = view.findViewById(R.id.equalizer_fragment_title);
         equalizerSwitch = view.findViewById(R.id.equalizer_switch);
-        Settings.isEqualizerEnabled=sharedPreferences.getBoolean("switch",true);
+        Settings.isEqualizerEnabled=sharedPreferences.getBoolean("switch",false);
         equalizerSwitch.setChecked(Settings.isEqualizerEnabled);
         chart   = view.findViewById(R.id.lineChart);
         mainLayout = view.findViewById(R.id.equalizer_action_container);
@@ -245,17 +245,13 @@ public class EqualizerFragment extends Fragment {
                 }
                 SharedPreferences.Editor editor=sharedPreferences.edit();
                 editor.putBoolean("switch",isChecked).apply();
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                /*
                 PackageManager packageManager = ctx.getPackageManager();
                 Intent intent = packageManager.getLaunchIntentForPackage(ctx.getPackageName());
                 ComponentName componentName = intent.getComponent();
                 Intent mainIntent = Intent.makeRestartActivityTask(componentName);
                 ctx.startActivity(mainIntent);
-                Runtime.getRuntime().exit(0);
+                Runtime.getRuntime().exit(0);*/
             }
         });
 
