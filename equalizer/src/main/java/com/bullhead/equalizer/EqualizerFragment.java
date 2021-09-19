@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.media.AudioManager;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.LoudnessEnhancer;
@@ -199,6 +200,27 @@ public class EqualizerFragment extends Fragment {
         chart   = view.findViewById(R.id.lineChart);
         mainLayout = view.findViewById(R.id.equalizer_action_container);
         presetsMainLayout = view.findViewById(R.id.presetsmainLayout);
+        final AudioManager audio = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
+        int currentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
+        int maxVolume=audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        seekVolume.setMax(maxVolume);
+        seekVolume.setProgress(currentVolume);
+        seekVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                audio.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         equalizerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
