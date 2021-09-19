@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -27,19 +28,18 @@ import com.bullhead.equalizer.EqualizerModel;
 import com.bullhead.equalizer.Settings;
 import com.google.gson.Gson;
 
-public class MainActivity extends AppCompatActivity  {
-    static int sessionId;
-    AudioSessionReceiver receiver;
-    private SharedPreferences sharedPreferences;
+import java.io.IOException;
+import java.util.Objects;
 
+public class MainActivity extends AppCompatActivity {
+    static int sessionId;
+    AudioSessionReceiver receiver=new AudioSessionReceiver();
+    private SharedPreferences sharedPreferences;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_DEFAULT);
-        this.registerReceiver(receiver, intentFilter);
         nr = getIntent().getIntExtra("nr", 0);
         sharedPreferences = getSharedPreferences("myPref", MODE_PRIVATE);
         getSupportActionBar().setTitle("Equalizer");
@@ -55,26 +55,26 @@ public class MainActivity extends AppCompatActivity  {
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
                 .build();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.eqFrame, equalizerFragment)
-                .commit();
-        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if(key.equals("switch"))
-                {
-                    Intent serviceIntent = new Intent(getApplicationContext(), ExampleService.class);
-                    if (sharedPreferences.getBoolean("switch",false)) {
-                        startService(serviceIntent);
-                    } else {
-                        stopService(serviceIntent);
-                    }
-                    //Toast.makeText(getApplicationContext(),String.valueOf(sharedPreferences.getBoolean("switch",true)),Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
 
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.eqFrame, equalizerFragment).commit();
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
+    }
+    SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if(key.equals("switch")) {
+                Intent serviceIntent=new Intent(getApplicationContext(),ExampleService.class);
+                if(Settings.isEqualizerEnabled)
+                {
+                    startService(serviceIntent);
+                }else{
+                    stopService(serviceIntent);
+                }
+                // Toast.makeText(getApplicationContext(),"da",Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
     @Override
     protected void onDestroy() {
         super.onDestroy();
