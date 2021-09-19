@@ -992,6 +992,7 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        /*
         if (mEqualizer != null) {
             mEqualizer.release();
         }
@@ -1002,7 +1003,7 @@ public class EqualizerFragment extends Fragment {
 
         if (presetReverb != null) {
             presetReverb.release();
-        }
+        }*/
 
         Settings.isEditing = false;
     }

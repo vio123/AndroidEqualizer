@@ -2,14 +2,17 @@ package com.musicequalizer.appten;
 
 import static com.musicequalizer.appten.MainActivity.sessionId;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.audiofx.Equalizer;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -17,6 +20,11 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bullhead.equalizer.EqualizerFragment;
+import com.bullhead.equalizer.Settings;
+
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ExampleService extends Service {
     @Override
