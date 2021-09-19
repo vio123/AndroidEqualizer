@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     static int sessionId;
     AudioSessionReceiver receiver=new AudioSessionReceiver();
     private SharedPreferences sharedPreferences;
+    public  EqualizerFragment equalizerFragment;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +52,10 @@ public class MainActivity extends AppCompatActivity {
         AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
         if (sessionId == 0)
             sessionId = audioManager.generateAudioSessionId();
-        EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
+         equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
                 .build();
-
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.eqFrame, equalizerFragment).commit();
         sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
         if (sessionId == 0)
             sessionId = audioManager.generateAudioSessionId();
-        EqualizerFragment equalizerFragment = EqualizerFragment.newBuilder()
+         equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
                 .build();
@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.eqFrame, equalizerFragment).commit();
         if (nr == 1) {
             loadEqualizerSettings();
+            nr=0;
         }
     }
 
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveEqualizerSettings() {
+    public void saveEqualizerSettings() {
         if (Settings.equalizerModel != null) {
             EqualizerSettings settings = new EqualizerSettings();
             settings.bassStrength = Settings.equalizerModel.getBassStrength();
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadEqualizerSettings() {
+    public void loadEqualizerSettings() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         Gson gson = new Gson();
