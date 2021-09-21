@@ -34,7 +34,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     static int sessionId;
     AudioSessionReceiver receiver=new AudioSessionReceiver();
-    private SharedPreferences sharedPreferences;
+    private static SharedPreferences sharedPreferences;
     public  EqualizerFragment equalizerFragment;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -49,9 +49,15 @@ public class MainActivity extends AppCompatActivity {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
-        AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-        if (sessionId == 0)
-            sessionId = audioManager.generateAudioSessionId();
+        loadEqualizerSettings();
+        Intent serviceIntent=new Intent(getApplicationContext(),ExampleService.class);
+        if(sharedPreferences.getBoolean("switch",false))
+        {
+            startService(serviceIntent);
+        }else{
+            stopService(serviceIntent);
+        }
+        sessionId=sharedPreferences.getInt("sessionId",0);
          equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        saveEqualizerSettings();
     }
 
     @Override
@@ -92,14 +99,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static void eq(Context context, int id) {
         sessionId = id;
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putInt("sessionId",sessionId).apply();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-        if (sessionId == 0)
-            sessionId = audioManager.generateAudioSessionId();
+        sessionId=sharedPreferences.getInt("sessionId",0);
          equalizerFragment = EqualizerFragment.newBuilder()
                 .setAccentColor(Color.parseColor("#4caf50"))
                 .setAudioSessionId(sessionId)
@@ -107,10 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.eqFrame, equalizerFragment).commit();
-        if (nr == 1) {
-            loadEqualizerSettings();
-            nr=0;
-        }
+        loadEqualizerSettings();
     }
 
 
